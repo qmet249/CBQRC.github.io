@@ -6,6 +6,8 @@
 <script>(function(){try{var k=localStorage.getItem('cbqrc-theme');var d=k?k==='dark':(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
 <meta name="description" content="충북양자연구센터 CBQRC 공식 홈페이지" data-i18n-content="meta.description">
 <title data-i18n="meta.title">CBQRC | 충북양자연구센터</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/tjdgus5160/tjdgus5160.github.io/main/CBQRC_logo.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/tjdgus5160/tjdgus5160.github.io/main/CBQRC_logo.png">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <script type="importmap">
 { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js" } }
@@ -122,10 +124,10 @@
     color:var(--ink);
   }
   .nav__brand img{
-    width:24px;
-    height:24px;
-    border-radius:6px;
-    object-fit:cover;
+    height:26px;
+    width:auto;
+    flex:0 0 auto;
+    object-fit:contain;
   }
   .nav__brand-name{line-height:1.1;}
   .nav__brand-name small{
@@ -275,6 +277,7 @@
     background:#fefefe;
     isolation:isolate;
     cursor:grab;
+    touch-action:pan-y;
   }
   .hero.is-grabbing{ cursor:grabbing; }
   [data-theme="dark"] .hero{ background:#0a0c12; }
@@ -296,7 +299,7 @@
   }
   .hero__title{
     margin:0;
-    font-weight:450;
+    font-weight:900;
     font-size:clamp(72px, 8.2vw, 132px);
     line-height:0.95;
     letter-spacing:-0.05em;
@@ -1981,6 +1984,7 @@ import * as THREE from "three";
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(33, 1, 0.1, 100);
   camera.position.set(0, 0, 6.6);
+  scene.add(camera); // so camera-parented objects (the headline plane) get rendered
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0xbcd0ff, 0.5));
   scene.add(new THREE.AmbientLight(0xffffff, 0.1));
@@ -2002,8 +2006,11 @@ import * as THREE from "three";
   tex.anisotropy = renderer.capabilities.getMaxAnisotropy ? renderer.capabilities.getMaxAnisotropy() : 1;
   var planeMat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: false });
   var textPlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), planeMat);
-  textPlane.position.set(0, 0.82, -2.7);
-  scene.add(textPlane);
+  // Parented to the camera so the headline is locked to the screen and can
+  // never drift / fly off-frame with the pointer parallax. The ribbon (in world
+  // space) still parallaxes over it, so the refraction continues to shift.
+  textPlane.position.set(0, 0, -9.3);
+  camera.add(textPlane);
 
   function heroColors() {
     var dark = document.documentElement.getAttribute("data-theme") === "dark";
@@ -2032,11 +2039,11 @@ import * as THREE from "three";
 
     var fsCss = mobile ? Math.min(72, heroW * 0.12) : Math.min(132, Math.max(72, heroW * 0.082));
     var fs = fsCss * S;
-    tctx.font = "450 " + fs + "px Pretendard, system-ui, sans-serif";
+    tctx.font = "900 " + fs + "px Pretendard, system-ui, sans-serif";
     tctx.textBaseline = "alphabetic";
     if ("letterSpacing" in tctx) { try { tctx.letterSpacing = (-0.05 * fs) + "px"; } catch (e) {} }
     var lh = fs * 1.0;
-    var x0 = (mobile ? 20 : Math.min(96, Math.max(24, heroW * 0.06))) * S;
+    var x0 = (mobile ? 26 : Math.min(110, Math.max(30, heroW * 0.066))) * S;
     var cy = h * 0.5;
     var y1 = cy - lh * 0.5 + fs * 0.36;
     var y2 = y1 + lh * 0.95;
@@ -2052,14 +2059,17 @@ import * as THREE from "three";
     tex.needsUpdate = true;
   }
   function fitTextPlane() {
-    var z = textPlane.position.z;
-    var d = camera.position.z - z;
+    // The plane is a child of the camera, sitting a fixed distance in front of
+    // it (kept ~2.7 behind the world origin so it stays behind the ribbon).
+    var d = camera.position.z + 2.7;
+    textPlane.position.set(0, 0, -d);
     var vh = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * d;
     var vw = vh * camera.aspect;
-    textPlane.scale.set(vw * 1.06, vh * 1.06, 1);
+    textPlane.scale.set(vw * 1.08, vh * 1.08, 1);
   }
   function rebuildText() {
-    var tw = Math.min(2200, Math.round(heroW * 1.5));
+    var dprX = Math.min(window.devicePixelRatio || 1, 2);
+    var tw = Math.min(4096, Math.max(1600, Math.round(heroW * dprX * 1.6)));
     var th = Math.max(1, Math.round(tw * (heroH / Math.max(1, heroW))));
     if (texCanvas.width !== tw || texCanvas.height !== th) { texCanvas.width = tw; texCanvas.height = th; }
     drawText();
@@ -2141,49 +2151,77 @@ import * as THREE from "three";
     camera.updateProjectionMatrix();
   }
   function resize() {
-    heroW = hero.clientWidth || window.innerWidth;
-    heroH = hero.clientHeight || window.innerHeight;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    var w = hero.clientWidth || window.innerWidth;
+    var h = hero.clientHeight || window.innerHeight;
+    if (w < 1 || h < 1) return;               // guard against transient 0 sizes
+    heroW = w; heroH = h;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(heroW, heroH, false);
     camera.aspect = heroW / Math.max(1, heroH);
     applyProfile(heroW);
     camera.updateProjectionMatrix();
     rebuildText();
+    renderer.render(scene, camera);            // repaint now, even if the loop is paused
   }
-  window.addEventListener("resize", resize, { passive: true });
+  // Coalesce resize work into one rAF, and listen broadly so the canvas always
+  // tracks the viewport (window resize, zoom, orientation, and any layout change
+  // that alters the hero's box — caught by ResizeObserver).
+  var resizePending = false;
+  function scheduleResize() {
+    if (resizePending) return;
+    resizePending = true;
+    requestAnimationFrame(function () { resizePending = false; resize(); });
+  }
+  window.addEventListener("resize", scheduleResize, { passive: true });
+  window.addEventListener("orientationchange", scheduleResize, { passive: true });
+  if ("ResizeObserver" in window) { try { new ResizeObserver(scheduleResize).observe(hero); } catch (e) {} }
 
   /* ---- interaction: hover parallax + DRAG to rotate ---- */
   var target = { px: 0, py: 0, scroll: 0 };
   var cur = { px: 0, py: 0, scroll: 0 };
-  var drag = { active: false, lastX: 0, lastY: 0, vx: 0, vy: 0, rx: 0, ry: 0, moved: false };
+  var drag = { active: false, touch: false, mode: null, startX: 0, startY: 0, lastX: 0, lastY: 0, vx: 0, vy: 0, rx: 0, ry: 0, moved: false };
 
   function ndc(e) { target.px = (e.clientX / window.innerWidth) * 2 - 1; target.py = (e.clientY / window.innerHeight) * 2 - 1; }
-  if (finePointer && !reduced) window.addEventListener("pointermove", ndc, { passive: true });
+  function recenter() { target.px = 0; target.py = 0; }   // glide back to neutral
+  if (finePointer && !reduced) {
+    window.addEventListener("pointermove", ndc, { passive: true });
+    window.addEventListener("pointerout", function (e) { if (!e.relatedTarget) recenter(); }, { passive: true });
+    document.addEventListener("mouseleave", recenter, { passive: true });
+    window.addEventListener("blur", recenter);
+  }
 
-  // drag (works on touch too, but we keep parallax pointer-only)
+  /* grab + drag to rotate. Mouse: free drag. Touch: a HORIZONTAL swipe rotates
+     the ribbon, a VERTICAL swipe scrolls the page (touch-action:pan-y). */
   function onDown(e) {
     if (e.target && e.target.closest && e.target.closest(".hero__scrolldown")) return;
-    if (e.button !== undefined && e.button !== 0) return;
-    drag.active = true; drag.moved = false; drag.lastX = e.clientX; drag.lastY = e.clientY; drag.vx = 0; drag.vy = 0;
-    hero.classList.add("is-grabbing");
+    if (e.button !== undefined && e.button > 0) return;
+    drag.active = true; drag.moved = false; drag.mode = null;
+    drag.touch = (e.pointerType === "touch" || e.pointerType === "pen");
+    drag.lastX = drag.startX = e.clientX; drag.lastY = drag.startY = e.clientY;
+    drag.vx = 0; drag.vy = 0;
+    if (!drag.touch) hero.classList.add("is-grabbing");
   }
   function onMove(e) {
     if (!drag.active) return;
+    if (drag.touch && drag.mode === null) {
+      var tdx = e.clientX - drag.startX, tdy = e.clientY - drag.startY;
+      if (Math.abs(tdx) < 6 && Math.abs(tdy) < 6) return;
+      drag.mode = Math.abs(tdx) > Math.abs(tdy) ? "drag" : "scroll";
+      if (drag.mode === "scroll") { drag.active = false; return; }  // let the page scroll
+      hero.classList.add("is-grabbing");
+    }
     var dx = e.clientX - drag.lastX, dy = e.clientY - drag.lastY;
     drag.lastX = e.clientX; drag.lastY = e.clientY;
     if (Math.abs(dx) + Math.abs(dy) > 2) drag.moved = true;
-    drag.ry += dx * 0.006; drag.rx += dy * 0.004;
-    drag.vx = dx * 0.006; drag.vy = dy * 0.004;
+    var yk = drag.touch ? 0 : 0.004;   // on touch, rotate around Y only (vertical stays scroll)
+    drag.ry += dx * 0.006; drag.rx += dy * yk;
+    drag.vx = dx * 0.006; drag.vy = dy * yk;
   }
-  function onUp() { drag.active = false; hero.classList.remove("is-grabbing"); }
-  if (finePointer) {            // mouse only — keep touch free for scrolling
-    hero.addEventListener("pointerdown", onDown);
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerup", onUp);
-    window.addEventListener("pointercancel", onUp);
-  } else {
-    hero.style.cursor = "default";
-  }
+  function onUp() { drag.active = false; drag.mode = null; hero.classList.remove("is-grabbing"); }
+  hero.addEventListener("pointerdown", onDown);
+  window.addEventListener("pointermove", onMove, { passive: true });
+  window.addEventListener("pointerup", onUp);
+  window.addEventListener("pointercancel", onUp);
 
   function onScroll() { var h = hero.offsetHeight || window.innerHeight; target.scroll = Math.max(0, Math.min(1, (window.scrollY || window.pageYOffset || 0) / h)); }
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -2201,7 +2239,7 @@ import * as THREE from "three";
     now = now || (typeof performance !== "undefined" ? performance.now() : Date.now());
     var time = now * 0.001;
 
-    var k = reduced ? 1 : 0.06;
+    var k = reduced ? 1 : 0.085;
     cur.px += (target.px - cur.px) * k;
     cur.py += (target.py - cur.py) * k;
     cur.scroll += (target.scroll - cur.scroll) * 0.08;
@@ -2230,13 +2268,10 @@ import * as THREE from "three";
     group.position.x = baseX - cur.px * 0.18 * hoverScale;
     group.scale.setScalar(baseScale * entScale);
 
-    camera.position.x += ((cur.px * 0.30 * hoverScale) - camera.position.x) * 0.05;
-    camera.position.y += ((-cur.py * 0.18 * hoverScale) - camera.position.y) * 0.05;
+    camera.position.x += ((cur.px * 0.30 * hoverScale) - camera.position.x) * 0.07;
+    camera.position.y += ((-cur.py * 0.18 * hoverScale) - camera.position.y) * 0.07;
     camera.lookAt(0, 0.82 - scrollY * 0.15, 0);
-
-    // text plane parallaxes a touch slower than the ribbon
-    textPlane.position.x = camera.position.x * 0.6;
-    textPlane.position.y = 0.82 - scrollY * 0.45;
+    // (the headline plane is parented to the camera, so it stays screen-locked)
 
     renderer.render(scene, camera);
   }
