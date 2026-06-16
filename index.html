@@ -1,0 +1,2272 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>(function(){try{var k=localStorage.getItem('cbqrc-theme');var d=k?k==='dark':(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<meta name="description" content="충북양자연구센터 CBQRC 공식 홈페이지" data-i18n-content="meta.description">
+<title data-i18n="meta.title">CBQRC | 충북양자연구센터</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js" } }
+</script>
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#fbfbfd;
+    --bg-soft-2:#f5f5f7;
+    --ink:#1d1d1f;
+    --muted:#6e6e73;
+    --line:rgba(0,0,0,0.10);
+    --line-soft:rgba(0,0,0,0.07);
+    --line-strong:rgba(0,0,0,0.14);
+    --accent:#0066cc;
+    --accent-hover:#0077ed;
+    --radius-card:18px;
+    --radius-btn:980px;
+    --container:1120px;
+    --nav-h:48px;
+    --shadow:0 1px 2px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.05);
+    --ease:cubic-bezier(0.22,0.61,0.36,1);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+
+  html{
+    -webkit-text-size-adjust:100%;
+    scroll-behavior:smooth;
+    scroll-padding-top:calc(var(--nav-h) + 16px);
+  }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:17px;
+    line-height:1.7;
+    letter-spacing:-0.01em;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+    word-break:keep-all;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  img{max-width:100%;display:block;}
+
+  h1,h2,h3{margin:0;}
+
+  p{margin:0;}
+
+  ::selection{background:rgba(0,102,204,0.14);}
+
+  /* ---------- Skip link ---------- */
+  .skip-link{
+    position:fixed;
+    top:8px;
+    left:50%;
+    transform:translateX(-50%) translateY(-160%);
+    z-index:200;
+    background:var(--ink);
+    color:#fff;
+    padding:10px 18px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    transition:transform .2s var(--ease);
+  }
+  .skip-link:focus{transform:translateX(-50%) translateY(0);}
+
+  /* ---------- Container ---------- */
+  .container{
+    width:100%;
+    max-width:var(--container);
+    margin-inline:auto;
+    padding-inline:24px;
+  }
+
+  /* ---------- Focus visibility ---------- */
+  a:focus-visible,
+  button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:6px;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(255,255,255,0.72);
+    -webkit-backdrop-filter:saturate(180%) blur(18px);
+    backdrop-filter:saturate(180%) blur(18px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav__inner{
+    height:var(--nav-h);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+  }
+  .nav__brand{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+  }
+  .nav__brand img{
+    width:24px;
+    height:24px;
+    border-radius:6px;
+    object-fit:cover;
+  }
+  .nav__brand-name{line-height:1.1;}
+  .nav__brand-name small{
+    display:block;
+    font-size:11px;
+    font-weight:500;
+    color:var(--muted);
+    letter-spacing:0;
+    margin-top:1px;
+  }
+  .nav__links{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .nav__links a{
+    position:relative;
+    display:inline-block;
+    padding:7px 14px;
+    font-size:14.5px;
+    font-weight:500;
+    color:var(--muted);
+    border-radius:8px;
+    transition:color .2s var(--ease), background-color .2s var(--ease);
+  }
+  .nav__links a:hover{color:var(--ink);}
+  .nav__links a[aria-current="true"]{
+    color:var(--ink);
+    font-weight:600;
+  }
+  .nav__links a[aria-current="true"]::after{
+    content:"";
+    position:absolute;
+    left:14px;
+    right:14px;
+    bottom:1px;
+    height:1.5px;
+    background:var(--ink);
+    border-radius:2px;
+  }
+  .nav__toggle{
+    display:none;
+    width:42px;
+    height:42px;
+    align-items:center;
+    justify-content:center;
+    background:transparent;
+    border:0;
+    border-radius:10px;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .nav__toggle svg{display:block;width:22px;height:22px;}
+  .nav__toggle .icon-close{display:none;}
+  .nav__toggle[aria-expanded="true"] .icon-open{display:none;}
+  .nav__toggle[aria-expanded="true"] .icon-close{display:block;}
+
+  /* ---------- Sections ---------- */
+  main{display:block;}
+
+  section{
+    padding-block:clamp(72px,11vw,140px);
+    border-top:1px solid var(--line-soft);
+  }
+  section:first-of-type{border-top:0;}
+
+  .kicker{
+    display:block;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 18px;
+  }
+
+  h2{
+    font-size:clamp(2rem,5vw,3.25rem);
+    line-height:1.08;
+    letter-spacing:-0.03em;
+    font-weight:700;
+  }
+
+  h3{
+    font-size:clamp(1.3rem,2.6vw,1.6rem);
+    line-height:1.2;
+    letter-spacing:-0.02em;
+    font-weight:700;
+  }
+
+  .lead{
+    font-size:clamp(1.15rem,2.2vw,1.45rem);
+    line-height:1.55;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    font-weight:500;
+  }
+
+  .body-text{
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.75;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:13px 26px;
+    font-size:16px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    border-radius:var(--radius-btn);
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), transform .15s var(--ease);
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn--primary{
+    background:var(--accent);
+    color:#fff;
+  }
+  .btn--primary:hover{background:var(--accent-hover);}
+  .btn--ghost{
+    background:transparent;
+    color:var(--accent);
+    border-color:var(--line-strong);
+  }
+  .btn--ghost:hover{
+    border-color:var(--accent);
+    background:rgba(0,102,204,0.04);
+  }
+
+  /* ---------- Hero (atuin-style 3D ribbon) ---------- */
+  .hero{
+    position:relative;
+    width:100%;
+    height:calc(100svh - var(--nav-h, 48px));
+    min-height:600px;
+    overflow:hidden;
+    border-top:0;
+    background:#fefefe;
+    isolation:isolate;
+    cursor:grab;
+  }
+  .hero.is-grabbing{ cursor:grabbing; }
+  [data-theme="dark"] .hero{ background:#0a0c12; }
+
+  .hero__canvas{
+    position:absolute; inset:0; z-index:2;
+    width:100%; height:100%; display:block;
+    pointer-events:none;
+  }
+
+  .hero__copy{
+    position:absolute; z-index:1;
+    left:clamp(24px, 6vw, 96px);
+    top:50%;
+    transform:translateY(calc(-50% + var(--pY, 0px)));
+    max-width:calc(100% - 40px);
+    pointer-events:none;
+    opacity:0;
+  }
+  .hero__title{
+    margin:0;
+    font-weight:450;
+    font-size:clamp(72px, 8.2vw, 132px);
+    line-height:0.95;
+    letter-spacing:-0.05em;
+    color:#0a0a0c;
+    white-space:nowrap;
+  }
+  [data-theme="dark"] .hero__title{ color:#f3f5f8; }
+  .hero__line{ display:block; }
+  .hero__line--2{ margin-left:0.92em; }
+  .hero__pill{ display:inline-block; }
+
+  .hero__since,.hero__scrolldown{
+    position:absolute; z-index:3; bottom:clamp(20px,3.4vw,40px);
+    font-size:clamp(13px,1vw,16px); letter-spacing:0.04em; text-transform:uppercase; font-weight:600;
+    color:#0a0a0c; text-decoration:none;
+  }
+  [data-theme="dark"] .hero__since,[data-theme="dark"] .hero__scrolldown{ color:#e7ebf2; }
+  .hero__since{ left:clamp(20px,4vw,40px); }
+  .hero__scrolldown{ right:clamp(20px,4vw,40px); display:inline-flex; align-items:center; gap:9px; transition:opacity .2s ease; }
+  .hero__scrolldown:hover{ opacity:0.6; }
+  .hero__scrolldown::after{ content:""; width:30px; height:1px; background:currentColor; display:inline-block; }
+  .hero__sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;}
+
+  /* CSS fallback when WebGL is unavailable: a static blue blob so the hero isn't empty */
+  .hero--nogl .hero__canvas{ display:none; }
+  .hero--nogl .hero__copy{ opacity:1; }
+  .hero--nogl::before{
+    content:""; position:absolute; z-index:2; top:-12%; right:-8%; width:66%; height:124%;
+    background:linear-gradient(160deg, #126bff, #0743a8 68%, #002e76);
+    border-radius:46% 46% 44% 44% / 60% 60% 40% 40%;
+    transform:rotate(8deg); opacity:0.95; pointer-events:none;
+  }
+
+  @media (max-width:760px){
+    .hero__title{ white-space:normal; font-size:clamp(40px,12vw,72px); }
+    .hero__line--2{ margin-left:0; }
+    .hero__copy{ left:20px; max-width:calc(100% - 36px); }
+    .hero__since,.hero__scrolldown{ font-size:12px; }
+    .hero__scrolldown::after{ width:18px; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .hero__scrolldown{ transition:none; }
+  }
+
+  /* ---------- About ---------- */
+  .about__head{
+    max-width:840px;
+  }
+  .about__head .lead{
+    margin-top:28px;
+  }
+  .about__grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(32px,5vw,72px);
+    margin-top:clamp(48px,7vw,80px);
+    align-items:start;
+  }
+  .about__body p{margin:0 0 20px;}
+  .about__body p:last-child{margin-bottom:0;}
+  .focus__label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 24px;
+  }
+  .focus-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+  }
+  .focus-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    padding:20px 4px;
+    border-top:1px solid var(--line-soft);
+    font-size:17px;
+    font-weight:500;
+    line-height:1.5;
+    letter-spacing:-0.02em;
+  }
+  .focus-list li:last-child{border-bottom:1px solid var(--line-soft);}
+  .focus-list__num{
+    flex:0 0 auto;
+    font-size:14px;
+    font-weight:600;
+    color:var(--accent);
+    font-variant-numeric:tabular-nums;
+    padding-top:2px;
+    min-width:24px;
+  }
+
+  /* ---------- People ---------- */
+  .section-head{max-width:760px;}
+  .section-head h2{margin-bottom:18px;}
+  .section-head .subhead{
+    color:var(--muted);
+    font-size:clamp(1.05rem,1.8vw,1.2rem);
+    line-height:1.6;
+    letter-spacing:-0.02em;
+    margin:0;
+  }
+  .people__card{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:clamp(32px,5vw,64px);
+    margin-top:clamp(48px,7vw,72px);
+    align-items:start;
+  }
+  .people__photo{
+    margin:0;
+    border-radius:var(--radius-card);
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:var(--bg-soft-2);
+  }
+  .people__photo img{
+    width:100%;
+    aspect-ratio:3/4;
+    object-fit:cover;
+  }
+  .people__role{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 14px;
+  }
+  .people__name{
+    font-size:clamp(1.8rem,3.5vw,2.4rem);
+    font-weight:700;
+    letter-spacing:-0.03em;
+    line-height:1.1;
+  }
+  .people__name-en{
+    display:block;
+    margin-top:6px;
+    font-size:1.05rem;
+    font-weight:500;
+    color:var(--muted);
+    letter-spacing:0;
+  }
+  .people__desc{
+    margin:22px 0 0;
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.7;
+    max-width:560px;
+  }
+  .career{
+    margin:34px 0 0;
+    padding:0;
+  }
+  .career__row{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px 24px;
+    align-items:baseline;
+    padding:18px 0;
+    border-top:1px solid var(--line-soft);
+  }
+  .career__row:last-child{border-bottom:1px solid var(--line-soft);}
+  .career__title{
+    margin:0;
+    font-size:16px;
+    font-weight:500;
+    line-height:1.5;
+    letter-spacing:-0.02em;
+  }
+  .career__period{
+    margin:0;
+    font-size:14px;
+    color:var(--muted);
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+
+  /* ---------- Activity ---------- */
+  .activity__grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:clamp(24px,3vw,40px);
+    margin-top:clamp(48px,7vw,72px);
+  }
+  .card{
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    background:#fff;
+    overflow:hidden;
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow);
+    border-color:var(--line-strong);
+  }
+  .card__media{
+    aspect-ratio:16/10;
+    overflow:hidden;
+    background:var(--bg-soft-2);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .card__media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .5s var(--ease);
+  }
+  .card:hover .card__media img{transform:scale(1.03);}
+  .card__body{padding:28px 28px 32px;}
+  .card__date{
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--accent);
+    font-variant-numeric:tabular-nums;
+    margin:0 0 12px;
+    letter-spacing:0.01em;
+  }
+  .card__body h3{margin:0 0 12px;}
+  .card__body p{
+    margin:0;
+    color:var(--muted);
+    font-size:16px;
+    line-height:1.6;
+  }
+
+  /* ---------- Contact ---------- */
+  .contact__grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    margin-top:clamp(48px,7vw,72px);
+    background:var(--line-soft);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-card);
+    overflow:hidden;
+  }
+  .contact__item{
+    background:#fff;
+    padding:36px 32px;
+  }
+  .contact__label{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 16px;
+  }
+  .contact__value{
+    font-size:17px;
+    line-height:1.6;
+    letter-spacing:-0.02em;
+    margin:0;
+    font-weight:500;
+  }
+  .contact__value a{
+    color:var(--accent);
+    transition:color .2s var(--ease);
+  }
+  .contact__value a:hover{color:var(--accent-hover);}
+
+  /* ---------- News ---------- */
+  .news{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:clamp(24px,3vw,32px);
+    margin-top:clamp(48px,7vw,72px);
+    align-items:stretch;
+  }
+  .news__card{
+    padding:clamp(36px,5vw,52px);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    background:#fff;
+  }
+  .news__tag{
+    display:inline-block;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.05em;
+    color:var(--muted);
+    padding:5px 13px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-btn);
+    margin:0 0 24px;
+  }
+  .news__card h3{margin:0 0 16px;max-width:600px;}
+  .news__card p{
+    margin:0;
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.7;
+    max-width:640px;
+  }
+  .news__accent{
+    padding:clamp(36px,5vw,52px);
+    border:1px solid var(--line);
+    border-radius:var(--radius-card);
+    background:var(--bg-soft);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .news__accent-brand{
+    font-size:clamp(2.2rem,5vw,3rem);
+    font-weight:800;
+    letter-spacing:-0.04em;
+    color:var(--ink);
+    line-height:1;
+  }
+  .news__accent-text{
+    margin-top:14px;
+    font-size:16px;
+    color:var(--muted);
+    letter-spacing:0.01em;
+  }
+
+  /* ---------- Footer (aino-style giant wordmark) ---------- */
+  .footer{
+    --f-bg:#f1efe9; --f-ink:#16150f; --f-mut:#6e6c62; --f-faint:#aaa89c; --f-line:rgba(22,21,15,0.14);
+    border-top:0;
+    background:var(--f-bg);
+    color:var(--f-ink);
+    overflow:hidden;
+    padding:clamp(48px,6vw,96px) clamp(20px,4vw,40px) 0;
+  }
+  [data-theme="dark"] .footer{
+    --f-bg:#0b0d12; --f-ink:#f1efe8; --f-mut:#8b90a0; --f-faint:#555a66; --f-line:rgba(241,239,232,0.12);
+  }
+  .footer__mark{
+    font-weight:800;
+    font-size:clamp(3.4rem, 24.5vw, 23rem);
+    line-height:0.8;
+    letter-spacing:-0.05em;
+    color:var(--f-ink);
+    white-space:nowrap;
+  }
+  .footer__cols{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:18px 24px;
+    margin-top:clamp(12px,1.4vw,22px);
+    font-family:ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Consolas,monospace;
+    font-size:clamp(11px,0.95vw,13px); letter-spacing:0.04em; text-transform:uppercase;
+  }
+  .footer__col{ display:flex; flex-direction:column; gap:4px; }
+  .footer__col--end{ text-align:right; align-items:flex-end; }
+  .footer__k{ color:var(--f-mut); }
+  .footer__v,.footer__clock{ color:var(--f-ink); text-decoration:none; font-variant-numeric:tabular-nums; }
+  .footer__v{ transition:opacity .2s var(--ease); }
+  .footer__v:hover{ opacity:0.55; }
+  .footer__strip{
+    display:flex; justify-content:space-between; gap:14px;
+    margin-top:clamp(22px,3vw,40px); padding:clamp(12px,1.4vw,18px) 0 clamp(16px,2vw,24px);
+    border-top:1px solid var(--f-line);
+    font-family:ui-monospace,"SF Mono",Consolas,monospace; font-size:11px; letter-spacing:0.1em;
+    color:var(--f-faint); white-space:nowrap; overflow:hidden;
+  }
+  .footer__strip span{ flex:0 0 auto; }
+  .footer__legal{ margin:0; padding:0 0 clamp(20px,2vw,30px); font-size:12px; color:var(--f-mut); }
+  @media (max-width:760px){
+    .footer__col--end{ text-align:left; align-items:flex-start; }
+    .footer__strip{ font-size:10px; letter-spacing:0.04em; }
+    .footer__strip span:nth-child(2),.footer__strip span:nth-child(4){ display:none; }
+  }
+
+  /* ---------- Reveal animation ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .7s var(--ease), transform .7s var(--ease);
+    will-change:opacity,transform;
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:none;
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:860px){
+    .nav__toggle{display:inline-flex;}
+    .nav__links{
+      position:fixed;
+      top:var(--nav-h);
+      left:0;
+      right:0;
+      flex-direction:column;
+      align-items:stretch;
+      gap:2px;
+      padding:14px 18px 26px;
+      background:rgba(255,255,255,0.96);
+      -webkit-backdrop-filter:saturate(180%) blur(18px);
+      backdrop-filter:saturate(180%) blur(18px);
+      border-bottom:1px solid var(--line);
+      transform:translateY(-12px);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .28s var(--ease), transform .28s var(--ease);
+    }
+    .nav.is-open .nav__links{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+    .nav__links a{
+      padding:13px 12px;
+      font-size:16px;
+      border-radius:10px;
+    }
+    .nav__links a:hover,
+    .nav__links a[aria-current="true"]{
+      background:var(--bg-soft-2);
+    }
+    .nav__links a[aria-current="true"]::after{display:none;}
+  }
+
+  @media (max-width:780px){
+    .about__grid{grid-template-columns:1fr;}
+    .people__card{grid-template-columns:1fr;}
+    .people__photo{max-width:300px;}
+    .activity__grid{grid-template-columns:1fr;}
+    .contact__grid{grid-template-columns:1fr;}
+    .news{grid-template-columns:1fr;}
+  }
+
+  @media (max-width:520px){
+    body{font-size:16px;}
+    .container{padding-inline:20px;}
+    .hero__cta{flex-direction:column;align-items:stretch;}
+    .hero__cta .btn{width:100%;}
+    .career__row{grid-template-columns:1fr;gap:4px;}
+    .career__period{white-space:normal;}
+    .contact__item{padding:28px 24px;}
+    .news__card,.news__accent{padding:32px 26px;}
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    .card,.card__media img,.btn,.nav__links,.nav__toggle,
+    .nav__links a,.skip-link{
+      transition:none !important;
+    }
+    .card:hover{transform:none;}
+    .card:hover .card__media img{transform:none;}
+  }
+
+  /* ============================================================
+     DARK MODE
+     Activated by <html data-theme="dark">. Remaps the EXISTING
+     :root custom properties to an Apple-style dark palette, then
+     patches the handful of components that hardcode #fff / light
+     gradients / light rgba() values rather than using a var().
+     Light mode is untouched, so it remains identical to today.
+     ============================================================ */
+
+  [data-theme="dark"]{
+    /* Surfaces: near-black base, slightly lifted cards */
+    --bg:#000000;
+    --bg-soft:#0b0b0d;
+    --bg-soft-2:#161617;
+    /* Text */
+    --ink:#f5f5f7;
+    --muted:#a1a1a6;
+    /* Hairlines: light, low-alpha on dark */
+    --line:rgba(255,255,255,0.12);
+    --line-soft:rgba(255,255,255,0.08);
+    --line-strong:rgba(255,255,255,0.20);
+    /* Accent: brighter blue for AA contrast on near-black */
+    --accent:#2997ff;
+    --accent-hover:#4aa8ff;
+    /* Minimal shadow; deeper on dark so cards still read as raised */
+    --shadow:0 1px 2px rgba(0,0,0,0.5), 0 12px 40px rgba(0,0,0,0.55);
+  }
+
+  /* ---- Selection ---- */
+  [data-theme="dark"] ::selection{background:rgba(41,151,255,0.30);}
+
+  /* ---- Sticky nav: translucent dark instead of translucent white ---- */
+  [data-theme="dark"] .nav{
+    background:rgba(11,11,13,0.72);
+  }
+
+  /* ---- Primary button: dark text on bright accent (Apple dark style) ---- */
+  [data-theme="dark"] .btn--primary{color:#000;}
+  /* Ghost button hover wash uses the new accent hue */
+  [data-theme="dark"] .btn--ghost:hover{background:rgba(41,151,255,0.12);}
+
+  /* ---- Hero gradient: black -> soft ---- */
+  [data-theme="dark"] .hero{
+    background:linear-gradient(180deg,#000000 0%,#0b0b0d 100%);
+  }
+
+  /* ---- Hero visual panel gradient + inner mark ---- */
+  [data-theme="dark"] .hero__visual{
+    background:linear-gradient(180deg,#0b0b0d 0%,#161617 100%);
+  }
+  [data-theme="dark"] .hero__visual-mark{
+    background:#1d1d1f;
+  }
+
+  /* ---- Surfaces that hardcode #fff in light mode ---- */
+  [data-theme="dark"] .card,
+  [data-theme="dark"] .contact__item,
+  [data-theme="dark"] .news__card{
+    background:var(--bg-soft);
+  }
+
+  /* ---- News accent panel: lift slightly above page bg ---- */
+  [data-theme="dark"] .news__accent{
+    background:var(--bg-soft-2);
+  }
+
+  /* ---- Skip link stays legible on its light pill in dark mode ---- */
+  [data-theme="dark"] .skip-link{color:#000;}
+
+  /* ---- Mobile nav drawer panel ---- */
+  @media (max-width:860px){
+    [data-theme="dark"] .nav__links{
+      background:rgba(11,11,13,0.96);
+    }
+  }
+
+  /* ============================================================
+     THEME-CHANGE TRANSITION
+     Smoothly cross-fade the core color properties when toggling.
+     Scoped to the properties that change so layout/animation
+     (reveal, hover transforms) are unaffected. Disabled fully
+     under prefers-reduced-motion.
+     ============================================================ */
+  @media (prefers-reduced-motion:no-preference){
+    body,
+    .nav,
+    .nav__links,
+    .hero,
+    .hero__visual,
+    .hero__visual-mark,
+    .card,
+    .contact__item,
+    .news__card,
+    .news__accent,
+    .footer,
+    .people__photo,
+    .news__tag,
+    .btn{
+      transition:
+        background-color .4s var(--ease),
+        border-color .4s var(--ease),
+        color .4s var(--ease),
+        box-shadow .4s var(--ease);
+    }
+    /* The theme toggle's icon swap */
+    .theme-toggle svg{transition:opacity .25s var(--ease), transform .35s var(--ease);}
+  }
+
+  /* ============================================================
+     THEME TOGGLE BUTTON
+     Sits in the top bar next to the hamburger. Square 42x42 hit
+     target (matches .nav__toggle) so it stays usable at 360px.
+     Sun shown in dark mode (tap -> go light); moon shown in light
+     mode (tap -> go dark).
+     ============================================================ */
+  .theme-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex:0 0 auto;
+    width:42px;
+    height:42px;
+    margin-left:2px;
+    background:transparent;
+    border:0;
+    border-radius:10px;
+    cursor:pointer;
+    color:var(--ink);
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .2s var(--ease), color .2s var(--ease);
+  }
+  .theme-toggle:hover{background:var(--bg-soft-2);}
+  .theme-toggle svg{display:block;width:20px;height:20px;}
+  /* Default (light): show moon, hide sun */
+  .theme-toggle .icon-sun{display:none;}
+  .theme-toggle .icon-moon{display:block;}
+  /* Dark: show sun, hide moon */
+  [data-theme="dark"] .theme-toggle .icon-sun{display:block;}
+  [data-theme="dark"] .theme-toggle .icon-moon{display:none;}
+
+  /* Keep the actions group (toggle + hamburger) tidy on the right */
+  .nav__actions{
+    display:inline-flex;
+    align-items:center;
+    gap:2px;
+  }
+
+  /* ============================================================
+     LANGUAGE TOGGLE BUTTON
+     Sits in the top bar next to the theme toggle. Pill-shaped
+     text button; auto width but min-height matches the 42px
+     square controls so it lines up at all breakpoints / 360px.
+     ============================================================ */
+  .lang-toggle{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex:0 0 auto;
+    min-width:42px;
+    height:34px;
+    padding:0 12px;
+    background:transparent;
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-btn);
+    cursor:pointer;
+    color:var(--ink);
+    font-family:inherit;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.01em;
+    line-height:1;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .lang-toggle:hover{
+    background:var(--bg-soft-2);
+    border-color:var(--accent);
+    color:var(--accent);
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .theme-toggle{transition:none !important;}
+    .theme-toggle svg{transition:none !important;}
+    .lang-toggle{transition:none !important;}
+  }
+
+  /* ============================================================
+     TOP-BAR — small-screen condensing so brand + 3 controls fit
+     at 360px without horizontal overflow.
+     ============================================================ */
+  @media (max-width:420px){
+    .nav__inner{gap:10px;}
+    .nav__brand{font-size:16px;gap:8px;}
+    .nav__brand-name small{font-size:10px;}
+    .theme-toggle{width:40px;height:40px;}
+    .nav__toggle{width:40px;height:40px;}
+    .lang-toggle{padding:0 9px;height:32px;font-size:12px;min-width:38px;}
+  }
+  @media (max-width:360px){
+    .nav__brand-name small{display:none;}
+  }
+
+  /* =========================================================================
+     CBQRC — Interaction / micro-animation layer
+     Additive only. Append to the END of the existing <style> block so these
+     rules win on equal specificity. Uses the existing --ease token and adds a
+     couple of new easing tokens. Nothing here changes layout box sizes, so it
+     cannot introduce horizontal overflow.
+     ========================================================================= */
+
+  :root{
+    /* gentler "settle" curve for reveals; standard ease for swaps */
+    --ease-out:cubic-bezier(0.16,1,0.3,1);
+    --ease-soft:cubic-bezier(0.4,0,0.2,1);
+    --reveal-rise:18px;
+  }
+
+  /* -------------------------------------------------------------------------
+     1) HERO ENTRANCE (on load, not scroll-triggered)
+     The hero .reveal items are taken over by .hero-anim: JS removes the
+     IntersectionObserver from them and adds .hero-anim to the <section>.
+     Each child starts hidden and animates in on a stagger via --i.
+     ------------------------------------------------------------------------- */
+  .hero.hero-anim .hero__eyebrow,
+  .hero.hero-anim h1,
+  .hero.hero-anim .hero__desc,
+  .hero.hero-anim .hero__cta,
+  .hero.hero-anim .hero__visual{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  .hero.hero-anim.is-ready .hero__eyebrow,
+  .hero.hero-anim.is-ready h1,
+  .hero.hero-anim.is-ready .hero__desc,
+  .hero.hero-anim.is-ready .hero__cta,
+  .hero.hero-anim.is-ready .hero__visual{
+    animation:heroIn .9s var(--ease-out) both;
+    animation-delay:calc(var(--i, 0) * 110ms);
+  }
+  /* the hero visual is heavier — let it rise a touch more slowly + softer */
+  .hero.hero-anim.is-ready .hero__visual{
+    animation-duration:1.05s;
+  }
+  @keyframes heroIn{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  /* When hero-anim is active, neutralize the inherited .reveal transition on
+     those same nodes so the two systems don't fight. */
+  .hero.hero-anim .reveal{transition:none;}
+  .hero.hero-anim .reveal.is-visible{opacity:0;transform:translateY(20px);} /* JS drives it */
+  .hero.hero-anim.is-ready .reveal{opacity:1;transform:none;}
+
+  /* -------------------------------------------------------------------------
+     2) REFINED SCROLL-REVEAL
+     Nicer easing + longer settle. Grouped children stagger via --i set by JS
+     on the container (data-stagger). Items keep their own .reveal but inherit
+     a per-item delay.
+     ------------------------------------------------------------------------- */
+  .reveal{
+    transform:translateY(var(--reveal-rise));
+    transition:opacity .8s var(--ease-out), transform .8s var(--ease-out);
+  }
+  /* staggered children: container marked [data-stagger], each child gets --i */
+  [data-stagger] > .reveal,
+  [data-stagger] > * > .reveal{
+    transition-delay:calc(var(--i, 0) * 80ms);
+  }
+
+  /* -------------------------------------------------------------------------
+     3) HOVER / ACTIVE MICRO-INTERACTIONS
+     Calm: small translate / hairline tint shifts. Pointer-aware so touch
+     devices never get stuck hover states.
+     ------------------------------------------------------------------------- */
+
+  /* nav links: subtle background bloom from the existing transition + a tiny
+     underline grow on the active item already exists; add a hover lift of the
+     label baseline-safe via background only (no transform to avoid blur). */
+  @media (hover:hover) and (pointer:fine){
+    .nav__links a{
+      transition:color .2s var(--ease), background-color .2s var(--ease);
+    }
+    .nav__links a:hover{
+      background-color:var(--bg-soft-2);
+    }
+
+    /* contact cells: hairline + faint tint lift on hover */
+    .contact__item{
+      transition:background-color .3s var(--ease);
+    }
+    .contact__item:hover{
+      background:var(--bg-soft);
+    }
+
+    /* career rows + focus-list rows: nudge content right, accent the number */
+    .career__row,
+    .focus-list li{
+      transition:transform .3s var(--ease-out), background-color .3s var(--ease);
+    }
+    .career__row:hover,
+    .focus-list li:hover{
+      transform:translateX(4px);
+    }
+    .focus-list__num{
+      transition:color .3s var(--ease), transform .3s var(--ease-out);
+    }
+    .focus-list li:hover .focus-list__num{
+      transform:translateX(2px);
+    }
+
+    /* buttons: lift slightly on hover (active scale already exists) */
+    .btn{
+      transition:background-color .2s var(--ease), color .2s var(--ease),
+                 border-color .2s var(--ease), transform .18s var(--ease-out),
+                 box-shadow .25s var(--ease);
+    }
+    .btn--primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 6px 18px rgba(0,102,204,0.20);
+    }
+    .btn--ghost:hover{
+      transform:translateY(-1px);
+    }
+  }
+  /* active feedback works on touch too (no hover dependency) */
+  .btn:active{transform:scale(0.98);}
+  .contact__value a:active{opacity:.7;}
+
+  /* -------------------------------------------------------------------------
+     4) HERO ORBITAL — slow continuous rotation
+     Rotates only the orbital ellipses group; the center nucleus stays put.
+     We rotate the whole SVG but counter-rotate is unnecessary since the mark
+     is radially symmetric enough — a slow full spin reads as "calm orbit".
+     ------------------------------------------------------------------------- */
+  @media (prefers-reduced-motion:no-preference){
+    .hero__visual-mark svg{
+      animation:orbitSpin 48s linear infinite;
+      transform-origin:50% 50%;
+      transform-box:fill-box;
+    }
+    /* pause the spin when the tab/section isn't visible to save power:
+       JS toggles .is-paused on the mark when offscreen. */
+    .hero__visual-mark.is-paused svg{
+      animation-play-state:paused;
+    }
+  }
+  @keyframes orbitSpin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+  }
+
+  /* -------------------------------------------------------------------------
+     5) THEME / LANGUAGE CROSSFADE
+     When JS sets data-swapping="theme" or "lang" on <html>, briefly fade the
+     page content so the swap reads as a soft dissolve instead of a hard cut.
+     Works regardless of whether the toggles currently exist — it's a no-op
+     until something sets the attribute.
+     ------------------------------------------------------------------------- */
+  html[data-swapping]{
+    /* mask the swap moment */
+  }
+  html[data-swapping] body{
+    transition:opacity .26s var(--ease-soft);
+  }
+  html[data-swapping="out"] body{
+    opacity:0;
+  }
+  /* Theme color tokens, if/when a [data-theme] toggle is added, will tween
+     smoothly because we transition the few surfaces that read from vars. */
+  body,
+  .nav,
+  .card,
+  .contact__item,
+  .hero,
+  .hero__visual,
+  .news__card,
+  .news__accent{
+    transition:background-color .4s var(--ease-soft),
+               color .4s var(--ease-soft),
+               border-color .4s var(--ease-soft);
+  }
+
+  /* -------------------------------------------------------------------------
+     6) SCROLL-PROGRESS INDICATOR (thin, on-brand, top hairline)
+     Fixed 2px bar under nothing — sits at the very top, above the nav blur.
+     Width driven by --scroll-progress (0..1) set by JS via rAF.
+     ------------------------------------------------------------------------- */
+  .scroll-progress{
+    position:fixed;
+    top:0;
+    left:0;
+    height:2px;
+    width:100%;
+    z-index:101; /* just above .nav (100) */
+    transform-origin:0 50%;
+    transform:scaleX(var(--scroll-progress, 0));
+    background:linear-gradient(90deg,var(--accent),var(--accent-hover));
+    opacity:.9;
+    pointer-events:none;
+    will-change:transform;
+  }
+
+  /* =========================================================================
+     REDUCED MOTION — neutralize everything added above.
+     Mirror the existing reduced-motion block; append alongside it.
+     ========================================================================= */
+  @media (prefers-reduced-motion:reduce){
+    /* hero entrance off */
+    .hero.hero-anim.is-ready .hero__eyebrow,
+    .hero.hero-anim.is-ready h1,
+    .hero.hero-anim.is-ready .hero__desc,
+    .hero.hero-anim.is-ready .hero__cta,
+    .hero.hero-anim.is-ready .hero__visual,
+    .hero.hero-anim .hero__eyebrow,
+    .hero.hero-anim h1,
+    .hero.hero-anim .hero__desc,
+    .hero.hero-anim .hero__cta,
+    .hero.hero-anim .hero__visual{
+      animation:none !important;
+      opacity:1 !important;
+      transform:none !important;
+    }
+    .hero.hero-anim .reveal,
+    .hero.hero-anim .reveal.is-visible{
+      opacity:1 !important;
+      transform:none !important;
+    }
+
+    /* reveal stagger off (existing block already kills .reveal transition) */
+    [data-stagger] > .reveal,
+    [data-stagger] > * > .reveal{transition-delay:0s !important;}
+
+    /* hover micro-interactions: remove transforms/transitions */
+    .career__row,.focus-list li,.focus-list__num,
+    .contact__item,.btn{
+      transition:none !important;
+    }
+    .career__row:hover,
+    .focus-list li:hover,
+    .focus-list li:hover .focus-list__num,
+    .btn--primary:hover,
+    .btn--ghost:hover{
+      transform:none !important;
+      box-shadow:none !important;
+    }
+
+    /* orbital spin off */
+    .hero__visual-mark svg{animation:none !important;}
+
+    /* swap crossfade off */
+    html[data-swapping] body,
+    html[data-swapping="out"] body{transition:none !important;opacity:1 !important;}
+    body,.nav,.card,.contact__item,.hero,.hero__visual,
+    .news__card,.news__accent{transition:none !important;}
+
+    /* scroll-progress: keep it static / hidden to avoid motion */
+    .scroll-progress{display:none !important;}
+  }
+</style>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main" data-i18n="a11y.skipLink">본문으로 이동</a>
+
+  <header class="nav" id="site-nav">
+    <div class="container nav__inner">
+      <a class="nav__brand" href="#top" aria-label="CBQRC 충북양자연구센터 홈" data-i18n-aria-label="nav.brand.aria">
+        <img src="https://raw.githubusercontent.com/tjdgus5160/tjdgus5160.github.io/main/CBQRC_logo.png" alt="" aria-hidden="true">
+        <span class="nav__brand-name">CBQRC<small data-i18n="nav.brand.sub">충북양자연구센터</small></span>
+      </a>
+      <nav aria-label="주요 메뉴" data-i18n-aria-label="nav.menu.aria">
+        <ul class="nav__links" id="nav-links">
+          <li><a href="#about" data-i18n="nav.link.about">소개</a></li>
+          <li><a href="#people" data-i18n="nav.link.people">구성원</a></li>
+          <li><a href="#activity" data-i18n="nav.link.activity">활동</a></li>
+          <li><a href="#contact" data-i18n="nav.link.contact">연락처</a></li>
+          <li><a href="#news" data-i18n="nav.link.news">소식</a></li>
+        </ul>
+      </nav>
+      <div class="nav__actions">
+        <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch to English">EN</button>
+        <button class="theme-toggle" id="theme-toggle" type="button"
+                aria-label="다크 모드 전환" aria-pressed="false">
+          <!-- Moon: shown in light mode (click to enable dark) -->
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+          </svg>
+          <!-- Sun: shown in dark mode (click to enable light) -->
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"/>
+            <path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/>
+          </svg>
+        </button>
+
+        <button class="nav__toggle" id="nav-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-links">
+          <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+      <div class="hero__copy">
+        <h1 id="hero-title" class="hero__title">
+          <span class="hero__line hero__line--1" data-i18n="hero.l1">We turn ideas</span>
+          <span class="hero__line hero__line--2"><span class="hero__pill" data-i18n="hero.l2">into the future</span></span>
+        </h1>
+      </div>
+      <span class="hero__since" data-i18n="hero.since">SINCE 2024</span>
+      <a class="hero__scrolldown" href="#about" aria-labelledby="hero-scroll-label">
+        <span class="hero__sr" id="hero-scroll-label" data-i18n="hero.scrollAria">아래로 스크롤하여 센터 소개로 이동</span>
+        <span aria-hidden="true" data-i18n="hero.scroll">SCROLL DOWN</span>
+      </a>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" aria-labelledby="about-title">
+      <div class="container">
+        <div class="about__head">
+          <span class="kicker reveal" data-i18n="about.kicker">About</span>
+          <h2 id="about-title" class="reveal" data-i18n="about.h2">양자기술 생태계를 연결하는 연구 플랫폼.</h2>
+          <p class="lead reveal" data-i18n="about.lead">CBQRC는 국책사업 기획, 공모사업 발굴, 원천기술 개발, 지역전략산업 연계, 산학연 협력을 중심으로 운영됩니다.</p>
+        </div>
+        <div class="about__grid">
+          <div class="about__body reveal">
+            <p class="body-text" data-i18n="about.body.p1">충북양자연구센터(CBQRC)는 국책사업 기획 및 출연연 공모사업 발굴 유치, 양자 물질 및 소자 원천기술 개발, 지역전략산업 연계 산업화 촉진, 산학연 협력체계 구축 등 양자기술 육성을 중점적으로 추진하는 기관입니다.</p>
+            <p class="body-text" data-i18n="about.body.p2">과학기술정보통신부 인력양성 사업(대학ICT 연구센터)을 통해 양자 기초·응용분야 연구역량 강화, 정부출연연구기관 및 도내 기업과의 공동연구, 스타트업 및 양자솔루션 기업 지원 등을 확대해 지역 양자산업을 선도할 우수 인재를 양성할 계획입니다.</p>
+          </div>
+          <div class="reveal">
+            <span class="focus__label" data-i18n="about.focus.label">Focus Areas</span>
+            <ul class="focus-list">
+              <li><span class="focus-list__num" aria-hidden="true">01</span><span data-i18n="about.focus.item1">양자기술 측정 장비 및 대상 물질 공동개발</span></li>
+              <li><span class="focus-list__num" aria-hidden="true">02</span><span data-i18n="about.focus.item2">양자기술 상호협력 및 공동연구</span></li>
+              <li><span class="focus-list__num" aria-hidden="true">03</span><span data-i18n="about.focus.item3">양자기술 정보공유 및 학술교류</span></li>
+              <li><span class="focus-list__num" aria-hidden="true">04</span><span data-i18n="about.focus.item4">인력양성을 위한 협력관계 구축 및 인적교류</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PEOPLE -->
+    <section id="people" aria-labelledby="people-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker reveal" data-i18n="people.kicker">People</span>
+          <h2 id="people-title" class="reveal" data-i18n="people.h2">김기웅 센터장</h2>
+          <p class="subhead reveal" data-i18n="people.subhead">CBQRC를 이끄는 센터장 정보와 주요 이력입니다.</p>
+        </div>
+        <div class="people__card">
+          <figure class="people__photo reveal">
+            <img src="https://raw.githubusercontent.com/tjdgus5160/tjdgus5160.github.io/main/professor.jpg" alt="김기웅 센터장 사진" data-i18n-alt="people.photo.alt" loading="lazy">
+          </figure>
+          <div class="reveal">
+            <p class="people__role" data-i18n="people.role">Center Director</p>
+            <h3 class="people__name"><span data-i18n="people.name">김기웅</span><span class="people__name-en" data-i18n="people.name.en">Dr. Kiwoong Kim</span></h3>
+            <p class="people__desc" data-i18n="people.desc">충북양자연구센터 센터장. 충북대학교 물리학과 교수로 재직 중이며, 양자기술과 생체자기 측정 분야를 중심으로 연구를 수행해 왔습니다.</p>
+            <dl class="career">
+              <div class="career__row">
+                <dt class="career__title" data-i18n="people.career.1.title">충북대학교 물리학과 교수</dt>
+                <dd class="career__period" data-i18n="people.career.1.period">2020.09 ~ 현재</dd>
+              </div>
+              <div class="career__row">
+                <dt class="career__title" data-i18n="people.career.2.title">한국표준과학연구원 우대/책임연구원 · 극저자장측정팀장 · 생체신호센터장 · 뇌인지측정센터장</dt>
+                <dd class="career__period" data-i18n="people.career.2.period">2002.04 ~ 2020.04</dd>
+              </div>
+              <div class="career__row">
+                <dt class="career__title" data-i18n="people.career.3.title">과학기술연합대학원대학교 의학물리학과 교수</dt>
+                <dd class="career__period" data-i18n="people.career.3.period">2006.03 ~ 2020.08</dd>
+              </div>
+              <div class="career__row">
+                <dt class="career__title" data-i18n="people.career.4.title">일본 교토대학교 전기공학부 초빙외국인학자</dt>
+                <dd class="career__period" data-i18n="people.career.4.period">2018.12 ~ 2019.04</dd>
+              </div>
+              <div class="career__row">
+                <dt class="career__title" data-i18n="people.career.5.title">독일 PTB/Bernstein 뇌신경센터 초청과학자</dt>
+                <dd class="career__period" data-i18n="people.career.5.period">2012.03 ~ 2012.06</dd>
+              </div>
+              <div class="career__row">
+                <dt class="career__title" data-i18n="people.career.6.title">미국 프린스턴 대학교 물리학과 Research Associate</dt>
+                <dd class="career__period" data-i18n="people.career.6.period">2006.07 ~ 2007.09</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY -->
+    <section id="activity" aria-labelledby="activity-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker reveal" data-i18n="activity.kicker">Activity</span>
+          <h2 id="activity-title" class="reveal" data-i18n="activity.h2">센터 활동</h2>
+          <p class="subhead reveal" data-i18n="activity.subhead">CBQRC의 주요 활동과 행사 정보를 카드형 레이아웃으로 정리했습니다.</p>
+        </div>
+        <div class="activity__grid">
+          <article class="card reveal">
+            <div class="card__media">
+              <img src="https://raw.githubusercontent.com/tjdgus5160/tjdgus5160.github.io/main/2026_quantum_korea.jpg" alt="2026 Quantum Korea 행사 이미지" data-i18n-alt="activity.card1.img.alt" loading="lazy">
+            </div>
+            <div class="card__body">
+              <p class="card__date" data-i18n="activity.card1.date">2026.07.02 ~ 2026.07.04</p>
+              <h3 data-i18n="activity.card1.title">2026 Quantum Korea</h3>
+              <p data-i18n="activity.card1.body">2026 Quantum Korea 관련 활동입니다.</p>
+            </div>
+          </article>
+          <article class="card reveal">
+            <div class="card__media">
+              <img src="https://raw.githubusercontent.com/tjdgus5160/tjdgus5160.github.io/main/2026_ITRC1.jpg" alt="2026 ITRC 행사 이미지" data-i18n-alt="activity.card2.img.alt" loading="lazy">
+            </div>
+            <div class="card__body">
+              <p class="card__date" data-i18n="activity.card2.date">2026.04.22 ~ 2026.04.24</p>
+              <h3 data-i18n="activity.card2.title">2026 ITRC</h3>
+              <p data-i18n="activity.card2.body">2026 ITRC 관련 활동입니다.</p>
+            </div>
+          </article>
+          <article class="card reveal">
+            <div class="card__media">
+              <img src="https://raw.githubusercontent.com/tjdgus5160/tjdgus5160.github.io/main/CBQRC_quantum_korea.png" alt="2025 Quantum Korea 행사 이미지" data-i18n-alt="activity.card3.img.alt" loading="lazy">
+            </div>
+            <div class="card__body">
+              <p class="card__date" data-i18n="activity.card3.date">2025.06.24 ~ 2025.06.26</p>
+              <h3 data-i18n="activity.card3.title">2025 Quantum Korea</h3>
+              <p data-i18n="activity.card3.body">2025 Quantum Korea 관련 활동입니다.</p>
+            </div>
+          </article>
+          <article class="card reveal">
+            <div class="card__media">
+              <img src="https://raw.githubusercontent.com/tjdgus5160/tjdgus5160.github.io/main/cbqrc_opening.jpg" alt="충북양자연구센터 설립 관련 이미지" data-i18n-alt="activity.card4.img.alt" loading="lazy">
+            </div>
+            <div class="card__body">
+              <p class="card__date" data-i18n="activity.card4.date">2024.07.24</p>
+              <h3 data-i18n="activity.card4.title">충북양자연구센터 설립</h3>
+              <p data-i18n="activity.card4.body">CBQRC 설립 관련 활동입니다.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker reveal" data-i18n="contact.kicker">Contact</span>
+          <h2 id="contact-title" class="reveal" data-i18n="contact.h2">연락처</h2>
+          <p class="subhead reveal" data-i18n="contact.subhead">센터 위치, 전화번호, 이메일 정보를 정리했습니다.</p>
+        </div>
+        <div class="contact__grid reveal">
+          <div class="contact__item">
+            <p class="contact__label" data-i18n="contact.label.address">Address</p>
+            <p class="contact__value" data-i18n="contact.value.address">충청북도 청주시 서원구 충대로 1, 충북대학교 학연산공동기술연구원 701호</p>
+          </div>
+          <div class="contact__item">
+            <p class="contact__label" data-i18n="contact.label.phone">Phone</p>
+            <p class="contact__value"><a href="tel:+82432613621" data-i18n="contact.value.phone">043-261-3621</a></p>
+          </div>
+          <div class="contact__item">
+            <p class="contact__label" data-i18n="contact.label.email">Email</p>
+            <p class="contact__value"><a href="mailto:kiwoong@cbnu.ac.kr" data-i18n="contact.value.email">kiwoong@cbnu.ac.kr</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWS -->
+    <section id="news" aria-labelledby="news-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker reveal" data-i18n="news.kicker">News</span>
+          <h2 id="news-title" class="reveal" data-i18n="news.h2">소식</h2>
+        </div>
+        <div class="news">
+          <article class="news__card reveal">
+            <span class="news__tag" data-i18n="news.tag">준비 중</span>
+            <h3 data-i18n="news.card.h3">업데이트 예정입니다.</h3>
+          </article>
+          <aside class="news__accent reveal">
+            <p class="news__accent-brand" data-i18n="news.accent.brand">CBQRC</p>
+            <p class="news__accent-text" data-i18n="news.accent.text">곧 새로운 소식으로 찾아뵙겠습니다.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__mark" aria-hidden="true">CBQRC</div>
+    <div class="footer__cols">
+      <div class="footer__col">
+        <span class="footer__k">CHEONGJU &middot; KR</span>
+        <span class="footer__clock" id="footer-clock">&mdash;&mdash; &mdash;&mdash;:&mdash;&mdash;:&mdash;&mdash;</span>
+      </div>
+      <div class="footer__col">
+        <span class="footer__k" data-i18n="footer.contact">Contact</span>
+        <a class="footer__v" href="mailto:kiwoong@cbnu.ac.kr">kiwoong@cbnu.ac.kr</a>
+      </div>
+      <div class="footer__col footer__col--end">
+        <a class="footer__v" href="tel:+82432613621">T. 043-261-3621</a>
+        <a class="footer__v" href="#top" data-i18n="footer.top">Back to top &uarr;</a>
+      </div>
+    </div>
+    <div class="footer__strip" aria-hidden="true">
+      <span>&amp;</span><span>충북양자연구센터</span><span>Q &middot; M &middot; E &middot; T</span><span>|&Psi;&rang; = &alpha;|0&rang; + &beta;|1&rang;</span><span>CBNU &middot; KR &middot; 2024</span>
+    </div>
+    <p class="footer__legal" data-i18n="footer.legal">© 2024 충북양자연구센터 · Chungbuk Quantum Research Center</p>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var prefersReduced = window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* ---------- Mobile nav toggle ---------- */
+      var nav = document.getElementById("site-nav");
+      var toggle = document.getElementById("nav-toggle");
+      var navLinksWrap = document.getElementById("nav-links");
+      var mobileMQ = window.matchMedia("(max-width: 860px)");
+
+      function setNav(open) {
+        nav.classList.toggle("is-open", open);
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? t("nav.toggle.close") : t("nav.toggle.open"));
+      }
+
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          setNav(!nav.classList.contains("is-open"));
+        });
+      }
+
+      if (navLinksWrap) {
+        navLinksWrap.addEventListener("click", function (e) {
+          if (e.target.closest("a")) {
+            setNav(false);
+          }
+        });
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && nav.classList.contains("is-open")) {
+          setNav(false);
+          if (toggle) { toggle.focus(); }
+        }
+      });
+
+      /* Close on outside click */
+      document.addEventListener("click", function (e) {
+        if (!nav.classList.contains("is-open")) { return; }
+        if (!nav.contains(e.target)) { setNav(false); }
+      });
+
+      /* Close when leaving the mobile breakpoint */
+      function handleMQ(e) {
+        if (!e.matches) { setNav(false); }
+      }
+      if (mobileMQ.addEventListener) {
+        mobileMQ.addEventListener("change", handleMQ);
+      } else if (mobileMQ.addListener) {
+        mobileMQ.addListener(handleMQ);
+      }
+
+      /* ============================================================
+         THEME (DARK MODE) TOGGLE
+         ============================================================ */
+      var THEME_KEY = 'cbqrc-theme';
+      var root = document.documentElement;
+      var themeBtn = document.getElementById('theme-toggle');
+      function applyTheme(mode){
+        if(mode==='dark'){root.setAttribute('data-theme','dark');}else{root.removeAttribute('data-theme');}
+        if(themeBtn){themeBtn.setAttribute('aria-pressed', mode==='dark'?'true':'false');
+          themeBtn.setAttribute('aria-label', mode==='dark'?t('theme.toLight'):t('theme.toDark'));}
+      }
+      var storedTheme=null; try{storedTheme=localStorage.getItem(THEME_KEY);}catch(e){}
+      var systemDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(storedTheme?storedTheme:(systemDark?'dark':'light'));
+      if(themeBtn){themeBtn.addEventListener('click',function(){
+        var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+        applyTheme(next); try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+      });}
+      /* Follow OS changes only until the user has chosen manually */
+      var sysMQ=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)');
+      function sysChange(e){var s=null;try{s=localStorage.getItem(THEME_KEY);}catch(err){} if(!s){applyTheme(e.matches?'dark':'light');}}
+      if(sysMQ){ if(sysMQ.addEventListener)sysMQ.addEventListener('change',sysChange); else if(sysMQ.addListener)sysMQ.addListener(sysChange); }
+
+      /* ============================================================
+         I18N — KO / EN LANGUAGE TOGGLE
+         ============================================================ */
+      var LANG_KEY = 'lang';
+      var I18N = {
+        "meta.title":{ko:"CBQRC | 충북양자연구센터",en:"CBQRC | Chungbuk Quantum Research Center"},
+        "meta.description":{ko:"충북양자연구센터 CBQRC 공식 홈페이지",en:"Official website of CBQRC, the Chungbuk Quantum Research Center"},
+        "a11y.skipLink":{ko:"본문으로 이동",en:"Skip to main content"},
+        "nav.brand.aria":{ko:"CBQRC 충북양자연구센터 홈",en:"CBQRC Chungbuk Quantum Research Center home"},
+        "nav.brand.sub":{ko:"충북양자연구센터",en:"Chungbuk Quantum Research Center"},
+        "nav.menu.aria":{ko:"주요 메뉴",en:"Main menu"},
+        "nav.link.about":{ko:"소개",en:"About"},
+        "nav.link.people":{ko:"구성원",en:"People"},
+        "nav.link.activity":{ko:"활동",en:"Activity"},
+        "nav.link.contact":{ko:"연락처",en:"Contact"},
+        "nav.link.news":{ko:"소식",en:"News"},
+        "nav.toggle.open":{ko:"메뉴 열기",en:"Open menu"},
+        "nav.toggle.close":{ko:"메뉴 닫기",en:"Close menu"},
+        "hero.l1":{ko:"양자로 여는",en:"We turn ideas"},
+        "hero.l2":{ko:"미래",en:"into the future"},
+        "hero.since":{ko:"SINCE 2024",en:"SINCE 2024"},
+        "hero.scroll":{ko:"스크롤",en:"SCROLL DOWN"},
+        "hero.scrollAria":{ko:"아래로 스크롤하여 센터 소개로 이동",en:"Scroll down to the about section"},
+        "about.kicker":{ko:"About",en:"About"},
+        "about.h2":{ko:"양자기술 생태계를 연결하는 연구 플랫폼.",en:"A research platform connecting the quantum technology ecosystem."},
+        "about.lead":{ko:"CBQRC는 국책사업 기획, 공모사업 발굴, 원천기술 개발, 지역전략산업 연계, 산학연 협력을 중심으로 운영됩니다.",en:"CBQRC operates around national R&D project planning, competitive program development, core technology R&D, regional strategic industry linkage, and industry-academia-research collaboration."},
+        "about.body.p1":{ko:"충북양자연구센터(CBQRC)는 국책사업 기획 및 출연연 공모사업 발굴 유치, 양자 물질 및 소자 원천기술 개발, 지역전략산업 연계 산업화 촉진, 산학연 협력체계 구축 등 양자기술 육성을 중점적으로 추진하는 기관입니다.",en:"The Chungbuk Quantum Research Center (CBQRC) is an institution dedicated to advancing quantum technology, focusing on planning national R&D projects and securing competitive programs from government-funded research institutes, developing core technologies for quantum materials and devices, promoting industrialization linked to regional strategic industries, and building an industry-academia-research collaboration framework."},
+        "about.body.p2":{ko:"과학기술정보통신부 인력양성 사업(대학ICT 연구센터)을 통해 양자 기초·응용분야 연구역량 강화, 정부출연연구기관 및 도내 기업과의 공동연구, 스타트업 및 양자솔루션 기업 지원 등을 확대해 지역 양자산업을 선도할 우수 인재를 양성할 계획입니다.",en:"Through the Ministry of Science and ICT's talent development program (University ICT Research Center), the center plans to cultivate outstanding talent to lead the regional quantum industry by strengthening research capabilities in fundamental and applied quantum fields, expanding joint research with government-funded research institutes and local companies, and supporting startups and quantum solution companies."},
+        "about.focus.label":{ko:"Focus Areas",en:"Focus Areas"},
+        "about.focus.item1":{ko:"양자기술 측정 장비 및 대상 물질 공동개발",en:"Joint development of quantum technology measurement equipment and target materials"},
+        "about.focus.item2":{ko:"양자기술 상호협력 및 공동연구",en:"Mutual cooperation and joint research in quantum technology"},
+        "about.focus.item3":{ko:"양자기술 정보공유 및 학술교류",en:"Information sharing and academic exchange in quantum technology"},
+        "about.focus.item4":{ko:"인력양성을 위한 협력관계 구축 및 인적교류",en:"Building partnerships and personnel exchange for talent development"},
+        "people.kicker":{ko:"People",en:"People"},
+        "people.h2":{ko:"김기웅 센터장",en:"Director Kiwoong Kim"},
+        "people.subhead":{ko:"CBQRC를 이끄는 센터장 정보와 주요 이력입니다.",en:"Profile and key career highlights of the director leading CBQRC."},
+        "people.photo.alt":{ko:"김기웅 센터장 사진",en:"Photo of Director Kiwoong Kim"},
+        "people.role":{ko:"Center Director",en:"Center Director"},
+        "people.name":{ko:"김기웅",en:"Kiwoong Kim"},
+        "people.name.en":{ko:"Dr. Kiwoong Kim",en:"Dr. Kiwoong Kim"},
+        "people.desc":{ko:"충북양자연구센터 센터장. 충북대학교 물리학과 교수로 재직 중이며, 양자기술과 생체자기 측정 분야를 중심으로 연구를 수행해 왔습니다.",en:"Director of the Chungbuk Quantum Research Center. He serves as a professor in the Department of Physics at Chungbuk National University and has conducted research focused on quantum technology and biomagnetic measurement."},
+        "people.career.1.title":{ko:"충북대학교 물리학과 교수",en:"Professor, Department of Physics, Chungbuk National University"},
+        "people.career.1.period":{ko:"2020.09 ~ 현재",en:"2020.09 ~ Present"},
+        "people.career.2.title":{ko:"한국표준과학연구원 우대/책임연구원 · 극저자장측정팀장 · 생체신호센터장 · 뇌인지측정센터장",en:"Korea Research Institute of Standards and Science (KRISS) — Distinguished/Principal Research Scientist · Head of Ultra-low Magnetic Field Measurement Team · Director of Biosignal Center · Director of Brain Cognition Measurement Center"},
+        "people.career.2.period":{ko:"2002.04 ~ 2020.04",en:"2002.04 ~ 2020.04"},
+        "people.career.3.title":{ko:"과학기술연합대학원대학교 의학물리학과 교수",en:"Professor, Department of Medical Physics, University of Science and Technology (UST)"},
+        "people.career.3.period":{ko:"2006.03 ~ 2020.08",en:"2006.03 ~ 2020.08"},
+        "people.career.4.title":{ko:"일본 교토대학교 전기공학부 초빙외국인학자",en:"Visiting Foreign Scholar, Kyoto University, Dept. of Electrical Engineering, Japan"},
+        "people.career.4.period":{ko:"2018.12 ~ 2019.04",en:"2018.12 ~ 2019.04"},
+        "people.career.5.title":{ko:"독일 PTB/Bernstein 뇌신경센터 초청과학자",en:"Invited Scientist, PTB / Bernstein Center for Computational Neuroscience, Germany"},
+        "people.career.5.period":{ko:"2012.03 ~ 2012.06",en:"2012.03 ~ 2012.06"},
+        "people.career.6.title":{ko:"미국 프린스턴 대학교 물리학과 Research Associate",en:"Research Associate, Princeton University, Dept. of Physics, USA"},
+        "people.career.6.period":{ko:"2006.07 ~ 2007.09",en:"2006.07 ~ 2007.09"},
+        "activity.kicker":{ko:"Activity",en:"Activity"},
+        "activity.h2":{ko:"센터 활동",en:"Center Activities"},
+        "activity.subhead":{ko:"CBQRC의 주요 활동과 행사 정보를 카드형 레이아웃으로 정리했습니다.",en:"Key activities and event information of CBQRC, organized in a card layout."},
+        "activity.card1.img.alt":{ko:"2026 Quantum Korea 행사 이미지",en:"2026 Quantum Korea event image"},
+        "activity.card1.date":{ko:"2026.07.02 ~ 2026.07.04",en:"2026.07.02 ~ 2026.07.04"},
+        "activity.card1.title":{ko:"2026 Quantum Korea",en:"2026 Quantum Korea"},
+        "activity.card1.body":{ko:"2026 Quantum Korea 관련 활동입니다.",en:"Activities related to 2026 Quantum Korea."},
+        "activity.card2.img.alt":{ko:"2026 ITRC 행사 이미지",en:"2026 ITRC event image"},
+        "activity.card2.date":{ko:"2026.04.22 ~ 2026.04.24",en:"2026.04.22 ~ 2026.04.24"},
+        "activity.card2.title":{ko:"2026 ITRC",en:"2026 ITRC"},
+        "activity.card2.body":{ko:"2026 ITRC 관련 활동입니다.",en:"Activities related to 2026 ITRC."},
+        "activity.card3.img.alt":{ko:"2025 Quantum Korea 행사 이미지",en:"2025 Quantum Korea event image"},
+        "activity.card3.date":{ko:"2025.06.24 ~ 2025.06.26",en:"2025.06.24 ~ 2025.06.26"},
+        "activity.card3.title":{ko:"2025 Quantum Korea",en:"2025 Quantum Korea"},
+        "activity.card3.body":{ko:"2025 Quantum Korea 관련 활동입니다.",en:"Activities related to 2025 Quantum Korea."},
+        "activity.card4.img.alt":{ko:"충북양자연구센터 설립 관련 이미지",en:"Image related to the founding of the Chungbuk Quantum Research Center"},
+        "activity.card4.date":{ko:"2024.07.24",en:"2024.07.24"},
+        "activity.card4.title":{ko:"충북양자연구센터 설립",en:"Founding of the Chungbuk Quantum Research Center"},
+        "activity.card4.body":{ko:"CBQRC 설립 관련 활동입니다.",en:"Activities related to the founding of CBQRC."},
+        "contact.kicker":{ko:"Contact",en:"Contact"},
+        "contact.h2":{ko:"연락처",en:"Contact"},
+        "contact.subhead":{ko:"센터 위치, 전화번호, 이메일 정보를 정리했습니다.",en:"The center's location, phone number, and email information."},
+        "contact.label.address":{ko:"Address",en:"Address"},
+        "contact.value.address":{ko:"충청북도 청주시 서원구 충대로 1, 충북대학교 학연산공동기술연구원 701호",en:"Room 701, Industry-Academia-Research Joint Technology Institute, Chungbuk National University, 1 Chungdae-ro, Seowon-gu, Cheongju-si, Chungcheongbuk-do, Republic of Korea"},
+        "contact.label.phone":{ko:"Phone",en:"Phone"},
+        "contact.value.phone":{ko:"043-261-3621",en:"043-261-3621"},
+        "contact.label.email":{ko:"Email",en:"Email"},
+        "contact.value.email":{ko:"kiwoong@cbnu.ac.kr",en:"kiwoong@cbnu.ac.kr"},
+        "news.kicker":{ko:"News",en:"News"},
+        "news.h2":{ko:"소식",en:"News"},
+        "news.tag":{ko:"준비 중",en:"Coming soon"},
+        "news.card.h3":{ko:"업데이트 예정입니다.",en:"Coming soon."},
+        "news.accent.brand":{ko:"CBQRC",en:"CBQRC"},
+        "news.accent.text":{ko:"곧 새로운 소식으로 찾아뵙겠습니다.",en:"New updates coming soon."},
+        "footer.contact":{ko:"연락처",en:"Contact"},
+        "footer.top":{ko:"맨 위로 ↑",en:"Back to top ↑"},
+        "footer.legal":{ko:"© 2024 충북양자연구센터 · Chungbuk Quantum Research Center",en:"© 2024 Chungbuk Quantum Research Center"},
+        /* UI-only labels (not bound to data-i18n nodes) */
+        "theme.toDark":{ko:"다크 모드 전환",en:"Switch to dark mode"},
+        "theme.toLight":{ko:"라이트 모드 전환",en:"Switch to light mode"},
+        "lang.toEn":{ko:"Switch to English",en:"Switch to English"},
+        "lang.toKo":{ko:"한국어로 전환",en:"Switch to Korean"},
+        "lang.btn.inKo":{ko:"EN",en:"EN"},
+        "lang.btn.inEn":{ko:"한국어",en:"한국어"}
+      };
+
+      var currentLang = 'ko';
+      try{ var sl=localStorage.getItem(LANG_KEY); if(sl==='en'||sl==='ko'){currentLang=sl;} }catch(e){}
+
+      function t(key){
+        /* Guard: applyTheme() runs at init before I18N/currentLang are assigned
+           (var-hoisted but still undefined here). Without this guard t() would
+           throw a TypeError and abort the whole <script>, killing every toggle,
+           the scroll-reveal, scrollspy and the motion layer. */
+        if(typeof I18N === 'undefined' || !I18N || typeof currentLang === 'undefined'){ return ''; }
+        var entry = I18N[key];
+        if(!entry){ return ''; }
+        return entry[currentLang] != null ? entry[currentLang] : (entry.ko != null ? entry.ko : '');
+      }
+
+      var langBtn = document.getElementById('lang-toggle');
+
+      function applyI18n(){
+        document.documentElement.lang = currentLang;
+
+        /* text content */
+        var nodes = document.querySelectorAll('[data-i18n]');
+        Array.prototype.forEach.call(nodes, function(el){
+          var key = el.getAttribute('data-i18n');
+          if(I18N[key]){ el.textContent = t(key); }
+        });
+        /* aria-label */
+        Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-aria-label]'), function(el){
+          var key = el.getAttribute('data-i18n-aria-label');
+          if(I18N[key]){ el.setAttribute('aria-label', t(key)); }
+        });
+        /* alt */
+        Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-alt]'), function(el){
+          var key = el.getAttribute('data-i18n-alt');
+          if(I18N[key]){ el.setAttribute('alt', t(key)); }
+        });
+        /* meta description (content attr) */
+        Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-content]'), function(el){
+          var key = el.getAttribute('data-i18n-content');
+          if(I18N[key]){ el.setAttribute('content', t(key)); }
+        });
+
+        /* dynamic / state-dependent labels */
+        if(langBtn){
+          langBtn.textContent = (currentLang==='ko') ? t('lang.btn.inKo') : t('lang.btn.inEn');
+          langBtn.setAttribute('aria-label', (currentLang==='ko') ? t('lang.toEn') : t('lang.toKo'));
+        }
+        if(themeBtn){
+          var isDark = root.getAttribute('data-theme')==='dark';
+          themeBtn.setAttribute('aria-label', isDark ? t('theme.toLight') : t('theme.toDark'));
+        }
+        /* nav toggle label reflects current open/close state in the active language */
+        if(toggle){
+          var open = nav.classList.contains('is-open');
+          toggle.setAttribute('aria-label', open ? t('nav.toggle.close') : t('nav.toggle.open'));
+        }
+      }
+
+      applyI18n();
+
+      if(langBtn){
+        langBtn.addEventListener('click', function(){
+          var next = (currentLang==='ko') ? 'en' : 'ko';
+          function doSwap(){
+            currentLang = next;
+            try{ localStorage.setItem(LANG_KEY, currentLang); }catch(e){}
+            applyI18n();
+          }
+          if(typeof window.cbqrcSwap === 'function'){ window.cbqrcSwap(doSwap); }
+          else { doSwap(); }
+        });
+      }
+
+      /* ---------- Reveal on scroll ---------- */
+      var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+
+      if (prefersReduced || !("IntersectionObserver" in window)) {
+        revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+      } else {
+        var revealObserver = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+
+        revealEls.forEach(function (el) { revealObserver.observe(el); });
+      }
+
+      /* ---------- Scrollspy ---------- */
+      var sections = Array.prototype.slice.call(
+        document.querySelectorAll("main section[id]")
+      );
+      var navLinks = Array.prototype.slice.call(
+        document.querySelectorAll('#nav-links a[href^="#"]')
+      );
+      var linkMap = {};
+      navLinks.forEach(function (link) {
+        var id = link.getAttribute("href").slice(1);
+        if (id) { linkMap[id] = link; }
+      });
+
+      function clearCurrent() {
+        navLinks.forEach(function (link) { link.removeAttribute("aria-current"); });
+      }
+
+      if ("IntersectionObserver" in window && sections.length) {
+        var visible = {};
+        var spy = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            visible[entry.target.id] = entry.isIntersecting;
+          });
+          var activeId = null;
+          sections.forEach(function (s) {
+            if (visible[s.id]) { activeId = s.id; }
+          });
+          clearCurrent();
+          if (activeId && linkMap[activeId]) {
+            linkMap[activeId].setAttribute("aria-current", "true");
+          }
+        }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+
+        sections.forEach(function (s) { spy.observe(s); });
+      }
+    })();
+
+    /* =========================================================================
+       CBQRC — Interaction / micro-animation layer (JS)
+       Self-contained second IIFE. Re-reads prefers-reduced-motion so it is
+       safe standalone and does not depend on the first IIFE's internals.
+       ========================================================================= */
+    (function () {
+      "use strict";
+
+      var reduceMQ = window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)");
+      function reduced() { return !!(reduceMQ && reduceMQ.matches); }
+
+      var hero = document.querySelector(".hero");
+
+      /* ---------- 1) HERO ENTRANCE (on load, staggered) ---------- */
+      if (hero) {
+        var heroItems = [
+          hero.querySelector(".hero__eyebrow"),
+          hero.querySelector("h1"),
+          hero.querySelector(".hero__desc"),
+          hero.querySelector(".hero__cta"),
+          hero.querySelector(".hero__visual")
+        ].filter(Boolean);
+
+        /* hero-anim disabled — ribbon hero uses hero.js + CSS entrance */
+        heroItems.forEach(function (el, i) {
+          el.style.setProperty("--i", String(i));
+        });
+
+        if (reduced()) {
+          // Show immediately, no animation.
+          hero.classList.add("is-ready");
+          heroItems.forEach(function (el) { el.classList.add("is-visible"); });
+        } else {
+          // Kick off after first paint so the stagger is visible.
+          var start = function () {
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                hero.classList.add("is-ready");
+              });
+            });
+          };
+          if (document.readyState === "complete") {
+            start();
+          } else {
+            window.addEventListener("load", start, { once: true });
+            // Fallback: don't wait forever on slow image loads.
+            setTimeout(start, 600);
+          }
+        }
+      }
+
+      /* ---------- 2) GROUPED REVEAL STAGGER ----------
+         Mark container groups so their .reveal children inherit an --i delay.
+         The existing IntersectionObserver still toggles .is-visible per element;
+         CSS transition-delay produces the cascade. */
+      if (!reduced()) {
+        var groups = [
+          ".focus-list",
+          ".activity__grid",
+          ".contact__grid",
+          ".career",
+          ".news"
+        ];
+        groups.forEach(function (sel) {
+          document.querySelectorAll(sel).forEach(function (group) {
+            group.setAttribute("data-stagger", "");
+            // Direct .reveal children, or .reveal that wrap rows.
+            var kids = group.querySelectorAll(":scope > .reveal, :scope > *");
+            var idx = 0;
+            Array.prototype.forEach.call(kids, function (kid) {
+              if (kid.classList && kid.classList.contains("reveal")) {
+                kid.style.setProperty("--i", String(idx++));
+              }
+            });
+          });
+        });
+      }
+
+      /* ---------- 4) ORBITAL: pause when offscreen (power saving) ---------- */
+      var mark = document.querySelector(".hero__visual-mark");
+      if (mark && !reduced() && "IntersectionObserver" in window) {
+        var orbitObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            mark.classList.toggle("is-paused", !e.isIntersecting);
+          });
+        }, { threshold: 0 });
+        orbitObs.observe(mark);
+      }
+
+      /* ---------- 5) THEME / LANGUAGE CROSSFADE HELPER ----------
+         Exposes window.cbqrcSwap(applyFn). It fades content out, runs applyFn()
+         to mutate the DOM/tokens, then fades back in. Reduced-motion aware. */
+      window.cbqrcSwap = function (applyFn) {
+        var root = document.documentElement;
+        if (reduced() || typeof applyFn !== "function") {
+          if (typeof applyFn === "function") { applyFn(); }
+          return;
+        }
+        root.setAttribute("data-swapping", "out");
+        var done = false;
+        var finish = function () {
+          if (done) { return; }
+          done = true;
+          try { applyFn(); } finally {
+            // next frame: fade back in
+            requestAnimationFrame(function () {
+              root.setAttribute("data-swapping", "in");
+              var clear = function () {
+                root.removeAttribute("data-swapping");
+                document.body.removeEventListener("transitionend", clear);
+              };
+              document.body.addEventListener("transitionend", clear);
+              setTimeout(clear, 400); // fallback
+            });
+          }
+        };
+        document.body.addEventListener("transitionend", finish, { once: true });
+        setTimeout(finish, 320); // fallback if transitionend doesn't fire
+      };
+
+      /* ---------- 6) SCROLL-PROGRESS INDICATOR ---------- */
+      if (!reduced()) {
+        var bar = document.createElement("div");
+        bar.className = "scroll-progress";
+        bar.setAttribute("aria-hidden", "true");
+        document.body.appendChild(bar);
+
+        var ticking = false;
+        function updateProgress() {
+          var doc = document.documentElement;
+          var scrollTop = window.pageYOffset || doc.scrollTop || 0;
+          var height = (doc.scrollHeight - doc.clientHeight) || 1;
+          var p = scrollTop / height;
+          if (p < 0) { p = 0; } else if (p > 1) { p = 1; }
+          bar.style.setProperty("--scroll-progress", p.toFixed(4));
+          ticking = false;
+        }
+        function onScroll() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(updateProgress);
+          }
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll, { passive: true });
+        updateProgress();
+      }
+
+      /* ---------- React to runtime reduced-motion changes ---------- */
+      function onReduceChange() {
+        if (reduced()) {
+          if (hero) {
+            hero.classList.add("is-ready");
+            hero.querySelectorAll(".reveal").forEach(function (el) {
+              el.classList.add("is-visible");
+            });
+          }
+          var existingBar = document.querySelector(".scroll-progress");
+          if (existingBar) { existingBar.style.display = "none"; }
+        }
+      }
+      if (reduceMQ) {
+        if (reduceMQ.addEventListener) {
+          reduceMQ.addEventListener("change", onReduceChange);
+        } else if (reduceMQ.addListener) {
+          reduceMQ.addListener(onReduceChange);
+        }
+      }
+    })();
+  </script>
+  <script type="module">
+/* =====================================================================
+   CBQRC Hero — procedural 3D ribbon with refractive (glass) material
+   atuin.media-style: a blue ribbon arches over the headline; the ribbon
+   is a glass (transmission) material so the headline behind it REFRACTS
+   and blurs through. The ribbon can also be grabbed + dragged with the
+   mouse. Headline lives in the WebGL scene (canvas-texture plane) so it
+   can be refracted; a hidden DOM <h1> keeps SEO/accessibility.
+   ===================================================================== */
+import * as THREE from "three";
+
+(function () {
+  "use strict";
+
+  var canvas = document.getElementById("hero-canvas");
+  var hero = document.querySelector(".hero");
+  if (!canvas || !hero) return;
+
+  function webglOk() {
+    try { var c = document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl") || c.getContext("experimental-webgl"))); }
+    catch (e) { return false; }
+  }
+  if (!webglOk()) { hero.classList.add("hero--nogl"); return; }
+
+  var reduceMQ = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
+  var reduced = !!reduceMQ.matches;
+  var finePointer = window.matchMedia ? window.matchMedia("(hover: hover) and (pointer: fine)").matches : false;
+
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: "high-performance" }); }
+  catch (e) { hero.classList.add("hero--nogl"); return; }
+  renderer.setClearAlpha(0);
+  if ("outputColorSpace" in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(33, 1, 0.1, 100);
+  camera.position.set(0, 0, 6.6);
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xbcd0ff, 0.5));
+  scene.add(new THREE.AmbientLight(0xffffff, 0.1));
+  var keyLight = new THREE.DirectionalLight(0xffffff, 2.4); keyLight.position.set(-4.5, 5.5, 4.5); scene.add(keyLight);
+  var rimLight = new THREE.DirectionalLight(0x2f63db, 1.8); rimLight.position.set(5.5, -1.5, -3.5); scene.add(rimLight);
+  var fillBlue = new THREE.DirectionalLight(0x0a3a9c, 0.7); fillBlue.position.set(2, -4, 2); scene.add(fillBlue);
+
+  /* ---------------------------------------------------------------
+     Refractable headline: drawn to a 2D canvas, shown on an unlit
+     plane that sits BEHIND the glass ribbon (so the ribbon refracts
+     it). Background matches the page so the plane is seamless.
+     --------------------------------------------------------------- */
+  var heroW = hero.clientWidth || window.innerWidth;
+  var heroH = hero.clientHeight || window.innerHeight;
+  var texCanvas = document.createElement("canvas");
+  var tctx = texCanvas.getContext("2d");
+  var tex = new THREE.CanvasTexture(texCanvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy ? renderer.capabilities.getMaxAnisotropy() : 1;
+  var planeMat = new THREE.MeshBasicMaterial({ map: tex, toneMapped: false });
+  var textPlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), planeMat);
+  textPlane.position.set(0, 0.82, -2.7);
+  scene.add(textPlane);
+
+  function heroColors() {
+    var dark = document.documentElement.getAttribute("data-theme") === "dark";
+    return dark
+      ? { bg: "#0a0c12", ink: "#f3f5f8", pill: "rgba(243,245,248,0.34)" }
+      : { bg: "#fefefe", ink: "#0a0a0c", pill: "rgba(10,10,12,0.26)" };
+  }
+  function getLines() {
+    var l1 = hero.querySelector(".hero__line--1");
+    var l2 = hero.querySelector(".hero__line--2 .hero__pill");
+    return { l1: l1 ? l1.textContent.trim() : "We turn ideas", l2: l2 ? l2.textContent.trim() : "into the future" };
+  }
+  function roundRect(c, x, y, w, h, r) {
+    c.beginPath();
+    c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath();
+  }
+  function drawText() {
+    var col = heroColors(), L = getLines();
+    var w = texCanvas.width, h = texCanvas.height;
+    var S = w / Math.max(1, heroW);
+    var mobile = heroW <= 760;
+    tctx.setTransform(1, 0, 0, 1, 0, 0);
+    tctx.clearRect(0, 0, w, h);
+    tctx.fillStyle = col.bg; tctx.fillRect(0, 0, w, h);
+
+    var fsCss = mobile ? Math.min(72, heroW * 0.12) : Math.min(132, Math.max(72, heroW * 0.082));
+    var fs = fsCss * S;
+    tctx.font = "450 " + fs + "px Pretendard, system-ui, sans-serif";
+    tctx.textBaseline = "alphabetic";
+    if ("letterSpacing" in tctx) { try { tctx.letterSpacing = (-0.05 * fs) + "px"; } catch (e) {} }
+    var lh = fs * 1.0;
+    var x0 = (mobile ? 20 : Math.min(96, Math.max(24, heroW * 0.06))) * S;
+    var cy = h * 0.5;
+    var y1 = cy - lh * 0.5 + fs * 0.36;
+    var y2 = y1 + lh * 0.95;
+
+    tctx.fillStyle = col.ink;
+    tctx.fillText(L.l1, x0, y1);
+
+    var off = mobile ? 0 : fs * 0.92;
+    var x2 = x0 + off;
+    tctx.fillStyle = col.ink;
+    tctx.fillText(L.l2, x2, y2);
+
+    tex.needsUpdate = true;
+  }
+  function fitTextPlane() {
+    var z = textPlane.position.z;
+    var d = camera.position.z - z;
+    var vh = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * d;
+    var vw = vh * camera.aspect;
+    textPlane.scale.set(vw * 1.06, vh * 1.06, 1);
+  }
+  function rebuildText() {
+    var tw = Math.min(2200, Math.round(heroW * 1.5));
+    var th = Math.max(1, Math.round(tw * (heroH / Math.max(1, heroW))));
+    if (texCanvas.width !== tw || texCanvas.height !== th) { texCanvas.width = tw; texCanvas.height = th; }
+    drawText();
+    fitTextPlane();
+  }
+
+  /* ---------------------------------------------------------------
+     Ribbon geometry (parallel-transport frame + twist + thickness)
+     --------------------------------------------------------------- */
+  function buildRibbon(opts) {
+    var pts = opts.points.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); });
+    var curve = new THREE.CatmullRomCurve3(pts, false, "centripetal", 0.5);
+    var STEPS = opts.steps, W = opts.width, T = opts.thickness, TWIST = opts.twist;
+    var P = [], TAN = [];
+    for (var i = 0; i <= STEPS; i++) { var t = i / STEPS; P.push(curve.getPoint(t)); TAN.push(curve.getTangent(t).normalize()); }
+    var N = [], B = [], seed = new THREE.Vector3(0, 0, 1);
+    var n0 = new THREE.Vector3().crossVectors(TAN[0], seed); if (n0.lengthSq() < 1e-5) n0.set(1, 0, 0); n0.normalize();
+    N[0] = n0; B[0] = new THREE.Vector3().crossVectors(TAN[0], N[0]).normalize();
+    var q = new THREE.Quaternion();
+    for (var j = 1; j <= STEPS; j++) { q.setFromUnitVectors(TAN[j - 1], TAN[j]); N[j] = N[j - 1].clone().applyQuaternion(q).normalize(); B[j] = new THREE.Vector3().crossVectors(TAN[j], N[j]).normalize(); }
+    var pos = [], gF = [], gS = [];
+    function v(p) { pos.push(p.x, p.y, p.z); return pos.length / 3 - 1; }
+    for (var k = 0; k <= STEPS; k++) {
+      var tt = k / STEPS, ang = TWIST * tt, taper = 0.72 + 0.28 * Math.sin(Math.PI * tt);
+      var hw = (W * taper) / 2, ht = T / 2;
+      var nrm = N[k].clone().multiplyScalar(Math.cos(ang)).addScaledVector(B[k], Math.sin(ang)).normalize();
+      var bin = B[k].clone().multiplyScalar(Math.cos(ang)).addScaledVector(N[k], -Math.sin(ang)).normalize();
+      var c = P[k];
+      v(c.clone().addScaledVector(nrm, hw).addScaledVector(bin, ht));
+      v(c.clone().addScaledVector(nrm, -hw).addScaledVector(bin, ht));
+      v(c.clone().addScaledVector(nrm, -hw).addScaledVector(bin, -ht));
+      v(c.clone().addScaledVector(nrm, hw).addScaledVector(bin, -ht));
+    }
+    function quad(a, b, cc, d, g) { g.push(a, b, cc, a, cc, d); }
+    for (var s = 0; s < STEPS; s++) {
+      var o = s * 4, p = (s + 1) * 4;
+      quad(o + 0, o + 1, p + 1, p + 0, gF); quad(o + 2, o + 3, p + 3, p + 2, gF);
+      quad(o + 1, o + 2, p + 2, p + 1, gS); quad(o + 3, o + 0, p + 0, p + 3, gS);
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+    geo.setIndex(gF.concat(gS));
+    geo.addGroup(0, gF.length, 0); geo.addGroup(gF.length, gS.length, 1);
+    geo.computeVertexNormals();
+    return geo;
+  }
+
+  var ribbonGeo = buildRibbon({
+    points: [
+      [-0.40, -4.8,  1.15], [-0.28, -1.0,  1.30], [-0.05, 1.4, 1.05],
+      [ 0.38,  2.45, 0.50], [ 1.08, 2.78, -0.10], [ 1.78, 2.40, -0.78],
+      [ 2.08,  0.2, -1.32], [ 2.18, -2.6, -1.45], [ 2.05, -4.8, -1.40]
+    ],
+    steps: 460, width: 1.42, thickness: 0.12, twist: Math.PI * 1.1
+  });
+
+  // glass front: refracts the headline behind it
+  var matFront = new THREE.MeshPhysicalMaterial({
+    color: 0x1f74ff, roughness: 0.2, metalness: 0.0,
+    transmission: 0.62, thickness: 0.65, ior: 1.34,
+    attenuationColor: new THREE.Color(0x4a8bf0), attenuationDistance: 4.5,
+    clearcoat: 0.5, clearcoatRoughness: 0.22, side: THREE.DoubleSide
+  });
+  // darker, mostly-solid sides
+  var matSide = new THREE.MeshPhysicalMaterial({
+    color: 0x06337f, roughness: 0.4, metalness: 0.06,
+    transmission: 0.18, thickness: 0.7, ior: 1.36,
+    clearcoat: 0.3, clearcoatRoughness: 0.3, side: THREE.DoubleSide
+  });
+  var ribbon = new THREE.Mesh(ribbonGeo, [matFront, matSide]);
+  var group = new THREE.Group(); group.add(ribbon); scene.add(group);
+
+  /* ---- responsive profiles ---- */
+  var baseScale = 1, baseX = 0;
+  function applyProfile(w) {
+    if (w <= 600) { camera.fov = 42; camera.position.z = 9.7; baseScale = 1.0; baseX = 0.95; }
+    else if (w <= 1024) { camera.fov = 36; camera.position.z = 7.2; baseScale = 1.0; baseX = 0.3; }
+    else { camera.fov = 33; camera.position.z = 6.6; baseScale = 1.0; baseX = 0.0; }
+    camera.updateProjectionMatrix();
+  }
+  function resize() {
+    heroW = hero.clientWidth || window.innerWidth;
+    heroH = hero.clientHeight || window.innerHeight;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setSize(heroW, heroH, false);
+    camera.aspect = heroW / Math.max(1, heroH);
+    applyProfile(heroW);
+    camera.updateProjectionMatrix();
+    rebuildText();
+  }
+  window.addEventListener("resize", resize, { passive: true });
+
+  /* ---- interaction: hover parallax + DRAG to rotate ---- */
+  var target = { px: 0, py: 0, scroll: 0 };
+  var cur = { px: 0, py: 0, scroll: 0 };
+  var drag = { active: false, lastX: 0, lastY: 0, vx: 0, vy: 0, rx: 0, ry: 0, moved: false };
+
+  function ndc(e) { target.px = (e.clientX / window.innerWidth) * 2 - 1; target.py = (e.clientY / window.innerHeight) * 2 - 1; }
+  if (finePointer && !reduced) window.addEventListener("pointermove", ndc, { passive: true });
+
+  // drag (works on touch too, but we keep parallax pointer-only)
+  function onDown(e) {
+    if (e.target && e.target.closest && e.target.closest(".hero__scrolldown")) return;
+    if (e.button !== undefined && e.button !== 0) return;
+    drag.active = true; drag.moved = false; drag.lastX = e.clientX; drag.lastY = e.clientY; drag.vx = 0; drag.vy = 0;
+    hero.classList.add("is-grabbing");
+  }
+  function onMove(e) {
+    if (!drag.active) return;
+    var dx = e.clientX - drag.lastX, dy = e.clientY - drag.lastY;
+    drag.lastX = e.clientX; drag.lastY = e.clientY;
+    if (Math.abs(dx) + Math.abs(dy) > 2) drag.moved = true;
+    drag.ry += dx * 0.006; drag.rx += dy * 0.004;
+    drag.vx = dx * 0.006; drag.vy = dy * 0.004;
+  }
+  function onUp() { drag.active = false; hero.classList.remove("is-grabbing"); }
+  if (finePointer) {            // mouse only — keep touch free for scrolling
+    hero.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+  } else {
+    hero.style.cursor = "default";
+  }
+
+  function onScroll() { var h = hero.offsetHeight || window.innerHeight; target.scroll = Math.max(0, Math.min(1, (window.scrollY || window.pageYOffset || 0) / h)); }
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* ---- entrance ---- */
+  var t0 = (typeof performance !== "undefined" ? performance.now() : Date.now());
+  var ENTRANCE = reduced ? 0 : 1500;
+  function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+
+  /* ---- loop ---- */
+  var running = true, rafId = 0;
+  function frame(now) {
+    rafId = requestAnimationFrame(frame);
+    if (!running) return;
+    now = now || (typeof performance !== "undefined" ? performance.now() : Date.now());
+    var time = now * 0.001;
+
+    var k = reduced ? 1 : 0.06;
+    cur.px += (target.px - cur.px) * k;
+    cur.py += (target.py - cur.py) * k;
+    cur.scroll += (target.scroll - cur.scroll) * 0.08;
+
+    // drag momentum + ease back to neutral when released
+    if (!drag.active) {
+      drag.ry += drag.vx; drag.rx += drag.vy;
+      drag.vx *= 0.92; drag.vy *= 0.92;
+      drag.ry *= 0.95; drag.rx *= 0.95;
+    }
+
+    var ep = ENTRANCE ? Math.min(1, (now - t0) / ENTRANCE) : 1;
+    var e = easeOutCubic(ep);
+
+    var idleRotY = reduced ? 0 : Math.sin(time * 0.16) * 0.05 + Math.sin(time * 0.07) * 0.03;
+    var idleRotZ = reduced ? 0 : Math.sin(time * 0.11) * 0.025;
+    var idleY = reduced ? 0 : Math.sin(time * 0.13) * 0.06;
+    var entRotY = (1 - e) * -0.5, entY = (1 - e) * 1.2, entScale = 0.92 + 0.08 * e;
+    var scrollY = cur.scroll * 3.2, scrollRot = cur.scroll * 0.5;
+    var hoverScale = drag.active ? 0.25 : 1; // reduce hover while dragging
+
+    group.rotation.y = idleRotY + entRotY + cur.px * 0.16 * hoverScale + scrollRot * 0.4 + drag.ry;
+    group.rotation.x = idleRotZ * 0.5 - cur.py * 0.10 * hoverScale + scrollRot * 0.15 + drag.rx;
+    group.rotation.z = idleRotZ + cur.px * 0.04 * hoverScale;
+    group.position.y = idleY + entY - scrollY;
+    group.position.x = baseX - cur.px * 0.18 * hoverScale;
+    group.scale.setScalar(baseScale * entScale);
+
+    camera.position.x += ((cur.px * 0.30 * hoverScale) - camera.position.x) * 0.05;
+    camera.position.y += ((-cur.py * 0.18 * hoverScale) - camera.position.y) * 0.05;
+    camera.lookAt(0, 0.82 - scrollY * 0.15, 0);
+
+    // text plane parallaxes a touch slower than the ribbon
+    textPlane.position.x = camera.position.x * 0.6;
+    textPlane.position.y = 0.82 - scrollY * 0.45;
+
+    renderer.render(scene, camera);
+  }
+
+  /* ---- redraw triggers (i18n / theme / fonts) ---- */
+  var mo = new MutationObserver(function () { drawText(); });
+  var h1 = hero.querySelector(".hero__title");
+  if (h1) mo.observe(h1, { subtree: true, childList: true, characterData: true });
+  new MutationObserver(function () { drawText(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { drawText(); });
+
+  document.addEventListener("visibilitychange", function () { running = !document.hidden; });
+  if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { es.forEach(function (en) { running = en.isIntersecting && !document.hidden; }); }, { threshold: 0 }).observe(hero);
+  if (reduceMQ.addEventListener) reduceMQ.addEventListener("change", function (ev) { reduced = ev.matches; });
+
+  resize();
+  rafId = requestAnimationFrame(frame);
+})();
+  </script>
+  <script>
+    /* footer live clock (KST/local) */
+    (function () {
+      var el = document.getElementById("footer-clock");
+      if (!el) return;
+      var days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+      function p(n) { return (n < 10 ? "0" : "") + n; }
+      function tick() { var d = new Date(); el.textContent = days[d.getDay()] + " " + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds()); }
+      tick(); setInterval(tick, 1000);
+    })();
+  </script>
+</body>
+</html>
