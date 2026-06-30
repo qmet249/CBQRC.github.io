@@ -1,0 +1,20 @@
+window.CBQRC_UI = {
+  newsImagePlaceholder: "CBQRC News",
+  mediaImagePlaceholder: "Media Content",
+  openMenu: "Open menu",
+  closeMenu: "Close menu",
+  readMore: "Read more",
+  newTabSuffix: "opens in a new tab",
+  originalArticle: "original article",
+  featuredStoryLabel: "Featured story",
+  featuredMediaLabel: "Featured video",
+  thumbnailSuffix: "thumbnail",
+  memberAreasHeading: "Research Areas",
+  memberDetailsHeading: "Research Information",
+  memberLinksHeading: "Links",
+  memberPhotoAltSuffix: "photo",
+  historyGroupLabel: "history",
+  historyLinkLabel: "View related material",
+  newsEmpty: "There are no news items in this category at the moment.",
+  mediaEmpty: "There are no media items in this category at the moment."
+};
